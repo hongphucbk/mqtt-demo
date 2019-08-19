@@ -1,0 +1,48 @@
+<% layout('../layout/index') %>
+
+<div class="panel-heading">
+	Users Edit user: <%= user.name %>
+	<span style="float: right;"><a href="/users">Home</a></span>
+</div>
+<div class="panel-body">
+<form method="post" action="/users/edit/<%= user.id %>">
+  <div class="form-row">
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Name</label>
+      <input type="text" class="form-control" name="name" placeholder="Name..."
+        value="<%= user.name %>" required>
+    </div>
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Email</label>
+      <input type="text" class="form-control" name="email" placeholder="Email..."
+        value="<%= user.email %>" required>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label>Phone</label>
+      <input type="text" class="form-control" name="phone" placeholder="Phone..."
+        value="<%= user.phone %>" required>
+    </div>
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Password</label>
+      <input type="text" class="form-control" name="password" placeholder="Pass..."
+        value="<%= user.password %>" required>
+    </div>
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Role</label>
+      <input type="text" class="form-control" name="role" placeholder="Role..."
+        value="<%= user.role %>" required>
+    </div>
+   </div>
+    
+  <div class="form-row">
+  	<div class="col-md-12 mb-3 col-sm-6">
+  	<br>
+      <button class="btn btn-success" type="submit">Edit </button>
+    </div>
+  </div>
+ 
+
+  
+</form>
+</div>
+

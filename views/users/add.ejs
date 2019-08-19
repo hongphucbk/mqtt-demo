@@ -1,0 +1,56 @@
+<% layout('../layout/index') %>
+
+<div class="panel-heading">
+	Users Add new user
+	<span style="float: right;"><a href="/users">Home</a></span>
+</div>
+<div class="panel-body">
+
+<% if(typeof errors != "undefined"){%>
+<% errors.forEach(function(err){ %>
+  <div class="alert alert-danger">
+      <%= err %> 
+  </div>
+<% }) %>
+<% } %>
+
+
+<form method="post" action="/users/add">
+  <div class="form-row">
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Name</label>
+      <input type="text" class="form-control" name="name" placeholder="Name..."
+        value="Mark">
+    </div>
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Email</label>
+      <input type="text" class="form-control" name="email" placeholder="Email..."
+        value="Mark" required>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label>Phone</label>
+      <input type="text" class="form-control" name="phone" placeholder="Phone..."
+        value="2">
+    </div>
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Password</label>
+      <input type="text" class="form-control" name="password" placeholder="Pass..."
+        value="1" required>
+    </div>
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Role</label>
+      <input type="text" class="form-control" name="role" placeholder="Role..."
+        value="1" required>
+    </div>
+   </div>
+    
+  <div class="form-row">
+  	<div class="col-md-12 mb-3 col-sm-6">
+  	<br>
+      <button class="btn btn-success" type="submit">Submit </button>
+    </div>
+  </div>
+ 
+</form>
+</div>
+

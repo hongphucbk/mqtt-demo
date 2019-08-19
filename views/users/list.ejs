@@ -2,35 +2,44 @@
 
 <div class="panel-heading">
 	Users
+	<span style="float: right;"><a href="/users/add">Add new user</a></span>
 </div>
 <div class="panel-body">
 	<table class="table table-sm">
 	  <thead>
 	    <tr>
 	      <th scope="col">#</th>
-	      <th scope="col">First</th>
-	      <th scope="col">Last</th>
-	      <th scope="col">Handle</th>
+	      <th scope="col">Name</th>
+	      <th scope="col">Email</th>
+	      <th scope="col">Phone</th>
+	      <th scope="col">Role</th>
+	      <th scope="col">Action</th>
 	    </tr>
 	  </thead>
 	  <tbody>
-	    <tr>
-	      <th scope="row">1</th>
-	      <td>Mark</td>
-	      <td>Otto</td>
-	      <td>@mdo</td>
-	    </tr>
-	    <tr>
-	      <th scope="row">2</th>
-	      <td>Jacob</td>
-	      <td>Thornton</td>
-	      <td>@fat</td>
-	    </tr>
-	    <tr>
-	      <th scope="row">3</th>
-	      <td colspan="2">Larry the Bird</td>
-	      <td>@twitter</td>
-	    </tr>
+	    <script type="text/javascript">
+	    	var i = 1;
+	    </script>
+	    <% users.forEach(function(user) { %>
+	    	<tr>
+		    	<td>
+		    		<script type="text/javascript">
+				    	document.write(i);
+				    	i = i + 1;
+				    </script>
+				</td>
+				<td> <%= user.name %> </td>
+				<td> <%= user.email %> </td>
+				<td> <%= user.phone %> </td>
+				<td> <%= user.role %> </td>  
+				<td class="text-center">
+					<a class='btn btn-info btn-xs' href="/users/edit/<%= user.id %>">
+						<span class="glyphicon glyphicon-edit"></span>Edit</a>
+					<a href="/users/delete/<%= user.id %>" class="btn btn-danger btn-xs">
+						<span class="glyphicon glyphicon-remove"></span> Del</a></td>
+			</tr>	
+	    <% }); %>
+
 	  </tbody>
 	</table>
 </div>

@@ -1,0 +1,56 @@
+<% layout('../layout/index') %>
+
+<div class="panel-heading">
+	Electrical
+	<span style="float: right;"><a href="/elect/add">Add new station</a></span>
+</div>
+<div class="panel-body">
+	<table class="table table-sm">
+	  <thead>
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">Name</th>
+	      <th scope="col">Uab</th>
+	      <th scope="col">Ubc</th>
+	      <th scope="col">Uca</th>
+	      <th scope="col">Iab</th>
+	      <th scope="col">Ibc</th>
+	      <th scope="col">Ica</th>
+
+	      <th scope="col">Timestamp</th>
+	      <th scope="col">Action</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <script type="text/javascript">
+	    	var i = 1;
+	    </script>
+	    <% elects.forEach(function(elect) { %>
+	    	<tr>
+		    	<td>
+		    		<script type="text/javascript">
+				    	document.write(i);
+				    	i = i + 1;
+				    </script>
+				</td>
+				<td> <%= elect.name %> </td>
+				<td> <%= elect.value.uab %> </td>
+				<td> <%= elect.value.ubc %> </td>
+				<td> <%= elect.value.uca %> </td>
+				<td> <%= elect.value.iab %> </td>
+				<td> <%= elect.value.ibc %> </td>
+				<td> <%= elect.timestamp %> </td>
+				<td class="text-center">
+					<a class='btn btn-info btn-xs' href="/elect/edit/<%= elect.id %>">
+						<span class="glyphicon glyphicon-edit"></span>Edit</a>
+					<a href="/station/delete/<%= elect.id %>" class="btn btn-danger btn-xs">
+						<span class="glyphicon glyphicon-remove"></span> Del</a>
+				</td>
+			</tr>	
+	    <% }); %>
+
+	  </tbody>
+	</table>
+	<img src="img/a.jpg">
+</div>
+

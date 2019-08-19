@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
-    <title>DK GAS</title>
+    <title>DEMO NHÀ YẾN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/css.css" rel="stylesheet">
-    <script src="js/jquery-1.11.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link href="/css/css.css" rel="stylesheet">
+    <%-stylesheets%>
+    
 
 </head>
 <body>
@@ -32,6 +32,15 @@
 		<% include footer %>
 		<!-- End footer -->
 	</div>
-	<script src="js/js.js"></script>
+	<script src="/js/jquery-1.11.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+	<script src="/js/js.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>
+		$(".alert").fadeTo(3000, 500).slideUp(500, function() {
+	      $(".alert").slideUp(200);
+	    });
+	</script>
+	<%-scripts%>
 </body>
 </html>

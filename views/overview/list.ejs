@@ -1,0 +1,29 @@
+<% layout('../layout/index') %>
+
+<% stylesheet('/css/overview.css') -%>
+
+<div class="panel-heading">
+	Overview
+</div>
+<div class="panel-body">
+	<div class="main">
+		<div class="area">
+			<div class="parent">MAIN</div>
+		</div>
+		<div class="area"></div>
+		<div class="area"></div>
+		<div class="area">
+			<% stations.forEach(function(station) { %>
+				<a href="/overview/detail">
+					<div class="station"><%= station.description %></div>
+				</a>
+			<% }); %>	
+		</div>
+
+		
+	</div>
+	
+
+
+</div>
+

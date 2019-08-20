@@ -1,7 +1,7 @@
 var Elect = require('../models/elect.model')
 
 module.exports.list = function(req, res) {
-	Elect.find().then(function(elects){
+	Elect.find().sort({ _id: -1 }).limit(10).then(function(elects){
 		res.render('elect/list', {
 			elects: elects
 		});

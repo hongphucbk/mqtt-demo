@@ -61,17 +61,21 @@ server.on('ready', function(){
 });
 
 
-var Datatest = require('./models/datatest.model')
+var Datatest = require('./models/elect.model')
 
 //find when a message .is received
 server.on('published',function getdata(packet,client) {
-	if(packet.topic =='topic1/demo') 
+	if(packet.topic =='Data/MSB1') 
 	{
 		// console.log('data: ', packet.topic);
 		var data = packet.payload.toString();
 		var jsondata = JSON.parse(data);
+		var now = new Date();
 
-		var saveData = { "val" : jsondata }
+		var saveData = { 	"name" : "MSB1",
+							"value" : jsondata,
+							"timestamp" : now
+						}
 				console.log('receive: ', saveData);
 
 		Datatest.insertMany(saveData, function(err) {

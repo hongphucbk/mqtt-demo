@@ -31,7 +31,7 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useFindAndModif
 
 
 app.get('/', function(req, res) {
-	res.render('layout/index');
+	res.render('dashboard/list');
 }) 
 
 // Router -----------------------------------------------------------
@@ -54,7 +54,7 @@ var settings = {
 
 var server = new mosca.Server(settings);
 server.on('clientConnected', function(client) {
-   //console.log('client connected', client.id);
+   console.log('client connected', client.id);
 });
 server.on('ready', function(){
 	console.log("Server Mosca MQTT ready");
@@ -78,5 +78,12 @@ server.on('published',function getdata(packet,client) {
 			if (err) return handleError(err);
 		});
 
+	}
+
+	if(packet.topic =='topic1/test') 
+	{
+		// console.log('data: ', packet.topic);
+		var data = packet.payload.toString();
+		console.log("Đèn phòng khách đang: " + data)
 	}
 });

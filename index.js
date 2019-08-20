@@ -65,14 +65,14 @@ var Datatest = require('./models/elect.model')
 
 //find when a message .is received
 server.on('published',function getdata(packet,client) {
-	if(packet.topic =='Data/MSB1') 
+	if(packet.topic =='Data/MSB_01') 
 	{
 		// console.log('data: ', packet.topic);
 		var data = packet.payload.toString();
 		var jsondata = JSON.parse(data);
 		var now = new Date();
 
-		var saveData = { 	"name" : "MSB1",
+		var saveData = { 	"name" : "MSB01",
 							"value" : jsondata,
 							"timestamp" : now
 						}
@@ -90,4 +90,6 @@ server.on('published',function getdata(packet,client) {
 		var data = packet.payload.toString();
 		console.log("Đèn phòng khách đang: " + data)
 	}
+
+	
 });

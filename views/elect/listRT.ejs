@@ -1,0 +1,192 @@
+<% layout('../layout/index') %>
+
+<div class="panel-heading">
+	Electrical Realtime
+	<span style="float: right;"><a href="/elect/add">Add new station</a></span>
+</div>
+<div class="panel-body">
+	<table class="table table-sm">
+	  <thead>
+	    <tr>
+	      <!-- <th scope="col">#</th> -->
+	      <th scope="col">Name</th>
+	      <th scope="col">Uab</th>
+	      <th scope="col">Ubc</th>
+	      <th scope="col">Uca</th>
+	      <th scope="col">Iab</th>
+	      <th scope="col">Ibc</th>
+	      <th scope="col">Ica</th>
+	      <th scope="col">Cosphi</th>
+	      <th scope="col">Hz</th>
+	      <th scope="col">Kwh_Day</th>
+	      <th scope="col">Kwh_Total</th>
+	      <th scope="col">Time</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <script type="text/javascript">
+	    	var i = 1;
+	    </script>
+	    <tr>
+	    	<td id="name">MSB 01</td>
+	    	<td id="Uab"></td>
+	    	<td id="Ubc"></td>
+	    	<td id="Uca"></td>
+	    	<td id="Iab"></td>
+	    	<td id="Ibc"></td>
+	    	<td id="Ica"></td>
+	    	<td id="Cosphi"></td>
+	    	<td id="Hz"></td>
+	    	<td id="Kwh_Day"></td>
+	    	<td id="Kwh_Total"></td>
+	    	<td id="Timestamp"></td>
+	    </tr>
+
+	  </tbody>
+	</table>
+	<div class="col-md-6">
+		<canvas id="pie-chart" width="400" height="250"></canvas>
+	</div>
+	<div class="col-md-6">
+		<canvas id="line-chart" width="800" height="450"></canvas>
+	</div>
+	<div class="col-md-6" style="text-align: center;">
+		<canvas id="foo"></canvas>
+		<div id="preview-textfield" class="preview-textfield reset" style="font-size: 24px; text-align: center;"> V</div>
+	</div>
+</div>
+
+<script>
+	var now = new Date();
+    var socket = io("http://localhost:3001");
+    socket.emit('thongbao','hello');
+    socket.on('data', function(msg){
+      	document.getElementById("Uab").innerHTML = msg.Uab ;
+      	document.getElementById("Ubc").innerHTML = msg.Ubc ;
+      	document.getElementById("Uca").innerHTML = msg.Uca ;
+      	document.getElementById("Iab").innerHTML = msg.Iab ;
+      	document.getElementById("Ibc").innerHTML = msg.Ibc ;
+      	document.getElementById("Ica").innerHTML = msg.Ica ;
+      	document.getElementById("Cosphi").innerHTML = msg.Cosphi ;
+      	document.getElementById("Hz").innerHTML = msg.Hz ;
+      	document.getElementById("Kwh_Day").innerHTML = msg.Kwh_Day ;
+      	document.getElementById("Kwh_Total").innerHTML = msg.Kwh_Total ;
+      	document.getElementById("Timestamp").innerHTML = formatDate(new Date());
+      	console.log(msg);
+      	gauge.set(msg.Uab);
+      	document.getElementById("preview-textfield").innerHTML = msg.Uab + " V";
+
+    });
+
+
+    function formatDate(date) {
+	  var monthNames = [
+	    "January", "February", "March",
+	    "April", "May", "June", "July",
+	    "August", "September", "October",
+	    "November", "December"
+	  ];
+
+	  var day = date.getDate();
+	  var monthIndex = date.getMonth();
+	  var year = date.getFullYear();
+	  var hour = date.getHours();
+	  var minute = date.getMinutes();
+	  var second = date.getSeconds();
+
+	  return day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' + hour + ':' + minute +  ':' +second;
+	}
+
+	//console.log(formatDate(new Date()));  // show current date-time in console
+
+	new Chart(document.getElementById("pie-chart"), {
+	    type: 'pie',
+	    data: {
+	      labels: ["Châu Phi", "Châu Á", "Châu Âu", "Châu Mỹ Latin", "Bắc Mỹ"],
+	      datasets: [{
+	        label: "đơn vị (triệu người)",
+	        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+	        data: [2478,5267,734,784,433]
+	      }]
+	    },
+	    options: {
+	      title: {
+	        display: true,
+	        text: 'Biểu đồ tỷ lệ dân số thế giới'
+	      }
+	    }
+	});
+
+	new Chart(document.getElementById("line-chart"), {
+	  type: 'line',
+	  data: {
+	    labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+	    datasets: [{ 
+	        data: [86,114,106,106,107,111,133,221,783,2478],
+	        label: "Châu Phi",
+	        borderColor: "#3e95cd",
+	        fill: false
+	      }, { 
+	        data: [282,350,411,502,635,809,947,1402,3700,5267],
+	        label: "Châu Á",
+	        borderColor: "#8e5ea2",
+	        fill: false
+	      }, { 
+	        data: [168,170,178,190,203,276,408,547,675,734],
+	        label: "Châu Âu",
+	        borderColor: "#3cba9f",
+	        fill: false
+	      }, { 
+	        data: [40,20,10,16,24,38,74,167,508,784],
+	        label: "Châu Mỹ Latin",
+	        borderColor: "#e8c3b9",
+	        fill: false
+	      }, { 
+	        data: [6,3,2,2,7,26,82,172,312,433],
+	        label: "Bắc Mỹ",
+	        borderColor: "#c45850",
+	        fill: false
+	      }
+	    ]
+	  },
+	  options: {
+	    title: {
+	      display: true,
+	      text: 'Đồ thị tăng trưởng dân số thế giới'
+	    }
+	  }
+	});
+
+
+
+
+</script>
+<script type="text/javascript">
+	var opts = {
+	  lines: 5,
+	  angle: -0.15,
+	  lineWidth: 0.3,
+	  pointer: {
+	    length: 0.4,
+	    strokeWidth: 0.035,
+	    color: '#000000'
+	  },
+	  staticLabels: {
+		  font: "10px sans-serif",  // Specifies font
+		  labels: [0, 50, 100, 150, 200, 250],  // Print labels at these values
+		  color: "#000000",  // Optional: Label text color
+		  fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+		},
+
+	  limitMax: 'false', 
+	  percentColors: [[0.0, "#a9d70b" ], [0.50, "#f9c802"], [1.0, "#ff0000"]], // !!!!
+	  strokeColor: '#E0E0E0',
+	  generateGradient: true
+	};
+	var target = document.getElementById('foo');
+	var gauge = new Gauge(target).setOptions(opts);
+	gauge.maxValue = 250;
+	gauge.animationSpeed = 32;
+	gauge.set(67.7);
+
+</script>

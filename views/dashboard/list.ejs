@@ -1,10 +1,121 @@
 <% layout('../layout/index') %>
 
+<style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
 <div class="panel-heading">
 	HELLO
 	<span style="float: right;"><a href="/users/add">Add new user</a></span>
 </div>
 <div class="panel-body">
-	WELCOME
-</div>
+	<div class="col-md-12" style="position: relative;">
+		<img src="img/a.jpg" style="width: 1149px">
+		<p style="position: absolute; top: calc(28%);left: calc(17vh);font-size: 7" id="Uab">200</p>
+		<p style="position: absolute; top: calc(30%);left: calc(17vh);font-size: 7" id="Ubc">210</p>
+		<p style="position: absolute; top: calc(32%);left: calc(17vh);font-size: 7" id="Uca">210</p>
+		<p style="position: absolute; top: calc(34%);left: calc(17vh);font-size: 7" id="Iab">210</p>
 
+	</div>
+	<div id="map"></div>
+</div>
+	
+
+
+<script type="text/javascript">
+	var now = new Date();
+    var socket = io("http://localhost:3001");
+    socket.emit('thongbao','hello');
+    socket.on('data', function(msg){
+      	document.getElementById("Uab").innerHTML = msg.Uab ;
+      	document.getElementById("Ubc").innerHTML = msg.Ubc ;
+      	document.getElementById("Uca").innerHTML = msg.Uca ;
+      	document.getElementById("Iab").innerHTML = msg.Iab ;
+      	// document.getElementById("Ibc").innerHTML = msg.Ibc ;
+      	// document.getElementById("Ica").innerHTML = msg.Ica ;
+      	// document.getElementById("Cosphi").innerHTML = msg.Cosphi ;
+      	// document.getElementById("Hz").innerHTML = msg.Hz ;
+      	// document.getElementById("Kwh_Day").innerHTML = msg.Kwh_Day ;
+      	// document.getElementById("Kwh_Total").innerHTML = msg.Kwh_Total ;
+      	// document.getElementById("Timestamp").innerHTML = formatDate(new Date());
+      	// console.log(msg);
+      	// gauge.set(msg.Uab);
+      	// document.getElementById("preview-textfield").innerHTML = msg.Uab + " V";
+
+    });
+
+</script>
+
+<script type="text/javascript">
+      function initMap() {
+        var chicago = new google.maps.LatLng(41.850, -87.650);
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: chicago,
+          zoom: 3
+        });
+
+        var coordInfoWindow = new google.maps.InfoWindow();
+        coordInfoWindow.setContent(createInfoWindowContent(chicago, map.getZoom()));
+        coordInfoWindow.setPosition(chicago);
+        coordInfoWindow.open(map);
+
+        map.addListener('zoom_changed', function() {
+          coordInfoWindow.setContent(createInfoWindowContent(chicago, map.getZoom()));
+          coordInfoWindow.open(map);
+        });
+      }
+
+      var TILE_SIZE = 256;
+
+      function createInfoWindowContent(latLng, zoom) {
+        var scale = 1 << zoom;
+
+        var worldCoordinate = project(latLng);
+
+        var pixelCoordinate = new google.maps.Point(
+            Math.floor(worldCoordinate.x * scale),
+            Math.floor(worldCoordinate.y * scale));
+
+        var tileCoordinate = new google.maps.Point(
+            Math.floor(worldCoordinate.x * scale / TILE_SIZE),
+            Math.floor(worldCoordinate.y * scale / TILE_SIZE));
+
+        return [
+          'Chicago, IL',
+          'LatLng: ' + latLng,
+          'Zoom level: ' + zoom,
+          'World Coordinate: ' + worldCoordinate,
+          'Pixel Coordinate: ' + pixelCoordinate,
+          'Tile Coordinate: ' + tileCoordinate
+        ].join('<br>');
+      }
+
+      // The mapping between latitude, longitude and pixels is defined by the web
+      // mercator projection.
+      function project(latLng) {
+        var siny = Math.sin(latLng.lat() * Math.PI / 180);
+
+        // Truncating to 0.9999 effectively limits latitude to 89.189. This is
+        // about a third of a tile past the edge of the world tile.
+        siny = Math.min(Math.max(siny, -0.9999), 0.9999);
+
+        return new google.maps.Point(
+            TILE_SIZE * (0.5 + latLng.lng() / 360),
+            TILE_SIZE * (0.5 - Math.log((1 + siny) / (1 - siny)) / (4 * Math.PI)));
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj0xBS2MjwFUvajzUL5ThzbHeD0LhWyJ0&callback=initMap">
+    </script>
+ 

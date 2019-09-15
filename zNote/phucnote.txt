@@ -1,0 +1,4 @@
+https://viblo.asia/p/gioi-thieu-va-huong-dan-mot-so-thu-vien-ve-do-thi-don-gian-trong-javascript-m68Z00EzZkG
+
+Gause chart
+https://bernii.github.io/gauge.js/#!

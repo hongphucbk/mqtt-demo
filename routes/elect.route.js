@@ -7,6 +7,12 @@ var controller = require('../controllers/elect.controller');
 var validate = require('../validate/station.validate');
 
 router.get('/', controller.list);
+router.get('/rt', controller.listRT);
+
+router.get('/excel', controller.listExcel);
+
+router.get('/control', controller.listControl);
+
 // router.get('/add', controller.getAdd);
 // router.post('/add', validate.postAdd, controller.postAdd);
 

@@ -5,6 +5,9 @@ var stationSchema = new mongoose.Schema({
 	address: String,
 	information: String,
 	note: String,
+	maps_id: Number,
+	posx: Number,
+	posy: Number
 });
 
 var Station = mongoose.model('Station', stationSchema, 'stations');

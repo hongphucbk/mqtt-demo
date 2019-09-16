@@ -6,7 +6,10 @@ var router = express.Router();
 var controller = require('../controllers/overview.controller');
 //var validate = require('../validate/station.validate');
 
-router.get('/', controller.list);
+//router.get('/', controller.list);
+
+router.get('/maps', controller.maps);
+
 //router.get('/add', controller.getAdd);
 //router.post('/add', validate.postAdd, controller.postAdd);
 

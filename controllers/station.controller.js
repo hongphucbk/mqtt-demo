@@ -41,7 +41,10 @@ module.exports.postEdit = function(req, res) {
 	    "description" : req.body.description,
 	    "address" : req.body.address,
 	    "information" : req.body.information,
-	    "note" : req.body.note
+	    "note" : req.body.note,
+	    "maps_id" : req.body.maps_id,
+	    "posx" : req.body.posx,
+	    "posy" : req.body.posy
 	}
 
 	console.log(query)

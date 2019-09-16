@@ -66,25 +66,17 @@ var settings = {
 	http:{
 		port: 3002 	//MQTT for Web
 	},
-	port:3006,
-	// tcp: 
-	// 	 {
-	// 	port: 3006 //1883 MQTT for PLC
-	// 	 }
-	 
+	port:3003,		//MQTT for PLC
 	}
 
 var server = new mosca.Server(settings);
 
 server.on('clientConnected', function(client) {
-   console.log('Mosca client connected', client.id);
+   console.log('Mosca client connected ', client.id);
 });
 server.on('ready', function(){
-	console.log("Server Mosca MQTT ready 3006");
+	console.log("Server Mosca MQTT ready for PLC " + settings.port + ", for web port " + settings.http.port);
 });
-
-
-
 
 var Datatest = require('./models/elect.model')
 
@@ -104,11 +96,6 @@ server.on('published',function getdata(packet,client) {
 							"timestamp" : now
 						}
 				console.log('receive: ', saveData);
-
-		// Datatest.insertMany(saveData, function(err) {
-		// 	if (err) return handleError(err);
-		// });
-
 	}
 
 	if(packet.topic =='topic1/write') 

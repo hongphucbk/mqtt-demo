@@ -8,6 +8,14 @@ module.exports.list = function(req, res) {
 	})
 };
 
+module.exports.maps = function(req, res) {
+	Station.find().then(function(stations){
+		res.render('overview/maps', {
+			stations: stations
+		})
+	})
+};
+
 // module.exports.getAdd = function(req, res) {
 // 	Station.find().then(function(stations){
 // 		res.render('stations/add', {

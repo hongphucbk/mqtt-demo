@@ -6,6 +6,9 @@ var cabinetSchema = new mongoose.Schema({
 	address: String,
 	information: String,
 	note: String,
+	posx: Number,
+	posy: Number,
+	div_id: String,
 });
 
 var Cabinet = mongoose.model('Cabinet', cabinetSchema, 'cabinets');

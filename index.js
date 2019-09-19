@@ -121,6 +121,13 @@ server.on('published',function getdata(packet,client) {
 		console.log("Đèn phòng khách đang: " + data)
 	}
 
+	if(packet.topic =='stat/sonoff/POWER') 
+	{
+		// console.log('data: ', packet.topic);
+		var data = packet.payload.toString();
+		console.log("Đèn phòng khách đang: " + data)
+	}
+
 	
 });
 

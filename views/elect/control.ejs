@@ -17,14 +17,14 @@
                     data-target="#confirmModal" 
                     data-id="1"
                     data-name="pump1"
-                    data-value="1"
+                    data-value="ON"
                     >TRUE</button>
                 <button type="button" class="btn btn-secondary .btn-lg"
                     data-toggle="modal"       
                     data-target="#confirmModal" 
                     data-id="1"
                     data-name="pump1"
-                    data-value="0"
+                    data-value="OFF"
                 >FALSE</button>
             </div>
         </div>
@@ -132,8 +132,9 @@
         document.getElementById("value").innerHTML = value;
         
         var data_send = name + ":" + value;
-        console.log("Da gan vao data-send: " + data_send);
-        $('#write_data_button').attr("data-send", data_send);
+        var data_send_2 = value;
+        console.log("Da gan vao data-send: " + data_send_2);
+        $('#write_data_button').attr("data-send", data_send_2);
     });
 
 	$("#write_data_button").click(function() {
@@ -142,8 +143,10 @@
         //socket.emit('write_data_button', datasend);
 
         //var client = mqtt.connect('http://localhost:1883');
-        client.publish("mqtt/write", datasend);
-        console.log("Hihi, Da public: ");
+        //client.publish("mqtt/write", datasend);
+        client.publish("cmnd/sonoff/POWER", datasend);
+        
+        console.log("Hihi, Da public");
     });
 
 </script>

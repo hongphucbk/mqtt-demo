@@ -14,8 +14,12 @@ module.exports.overview = function(req, res) {
 module.exports.station = function(req, res) {
 	var id = req.params.id;
 	Station.findById(id).then(function(station){
-		res.render('elect/station', {
-			station: station
+		console.log(station.id)
+		Cabinet.find({station_id: station.id}).then(function(cabinets){
+			res.render('elect/station', {
+				station: station,
+				cabinets: cabinets,
+			});
 		});
 	});
 };

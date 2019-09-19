@@ -18,7 +18,7 @@ module.exports.getAdd = function(req, res) {
 };
 
 module.exports.postAdd = function(req, res) {
-	//console.log(req.body);
+	console.log(req.body);
 	// or, for inserting large batches of documents
 	Cabinet.insertMany(req.body, function(err) {
 		if (err) return handleError(err);
@@ -52,6 +52,9 @@ module.exports.postEdit = function(req, res) {
 	    "address" : req.body.address,
 	    "information" : req.body.information,
 	    "note" : req.body.note,
+		"posx" :  req.body.posx,
+		"posy" :  req.body.posy,
+		"div_id" :  req.body.div_id,
 	}
 
 	console.log(query)

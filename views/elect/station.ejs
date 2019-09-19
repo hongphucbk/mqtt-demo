@@ -10,22 +10,31 @@
 	Station:  <%= station.description %> - All Cabinet
 	<span style="float: right;"><a href="/elect/add">Add new station</a></span>
 </div>
+<style type="text/css">
+	.display{
+		position: absolute;
+		font-size: 7;
+	}
+</style>
+<!--  -->
 <div class="panel-body">
 <div class="container">
 	<div class="row">
 		<div class="col-md-12" style="position: relative;">
-		<img src="/img/a.jpg" style="width: 1000px">
-		<p style="position: absolute; top: calc(10%);left: calc(2vh);font-size: 7" id="Uab">Uab = 200 V</p>
-		<p style="position: absolute; top: calc(13%);left: calc(2vh);font-size: 7" id="Ubc">Ubc = 200 V</p>
-		<p style="position: absolute; top: calc(16%);left: calc(2vh);font-size: 7" id="Uca">Uca = 200 V</p>
-		<p style="position: absolute; top: calc(19%);left: calc(2vh);font-size: 7" id="Iab">Iab  = 2.5 A</p>
-		<p style="position: absolute; top: calc(22%);left: calc(2vh);font-size: 7" id="Iab">Iab  = 2.5 A</p>
-		<p style="position: absolute; top: calc(25%);left: calc(2vh);font-size: 7" id="Iab">Iab  = 2.5 A</p>
-		<p style="position: absolute; top: calc(28%);left: calc(2vh);font-size: 7" id="Iab">Hz  = 2.5 A</p>
-		<p style="position: absolute; top: calc(31%);left: calc(2vh);font-size: 7" id="Iab">PF  = 2.5 A</p>
-		<p style="position: absolute; top: calc(34%);left: calc(2vh);font-size: 7" id="Iab">KW  = 725 W</p>
+		<img src="/img/a.jpg" style="width: 100%">
 
-
+		<% cabinets.forEach(function(cabinet) { %>		
+			<p class="display" style="top: calc(<%= cabinet.posy + 0%>%);left: calc(<%= cabinet.posx %>vh);" id="Uab">Uab  = 200 V</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 3%>%);left: calc(<%= cabinet.posx %>vh);" id="Ubc">Ubc  = 200 V</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 6%>%);left: calc(<%= cabinet.posx %>vh);" id="Uca">Uca  = 210 V</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 9%>%);left: calc(<%= cabinet.posx %>vh);" id="Iab">Iab  = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 12%>%);left: calc(<%= cabinet.posx %>vh);" id="Iab">Ibc  = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 15%>%);left: calc(<%= cabinet.posx %>vh);" id="Ica">Iab  = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 18%>%);left: calc(<%= cabinet.posx %>vh);" id="F">F    = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 21%>%);left: calc(<%= cabinet.posx %>vh);" id="Iab">PF   = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 24%>%);left: calc(<%= cabinet.posx %>vh);" id="Kwhd">KWh  = 725 Kwh (Day)</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 27%>%);left: calc(<%= cabinet.posx %>vh);" id="Kwht">KWh  = 725 Kwh (Total</p>
+		<% }); %>
 	</div>
 	<div id="map"></div>
 

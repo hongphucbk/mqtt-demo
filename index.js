@@ -31,6 +31,7 @@ const excel = require('node-excel-export');
 var userRouter = require('./routes/user.route');
 var authRouter = require('./routes/auth.route');
 var stationRouter = require('./routes/station.route');
+var cabinetRouter = require('./routes/cabinet.route');
 var overviewRouter = require('./routes/overview.route');
 var electRouter = require('./routes/elect.route');
 //-------------------------------------------------------------------
@@ -47,6 +48,7 @@ app.get('/', function(req, res) {
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
 app.use('/station', stationRouter);
+app.use('/cabinet', cabinetRouter);
 app.use('/overview', overviewRouter);
 app.use('/elect', electRouter);
 

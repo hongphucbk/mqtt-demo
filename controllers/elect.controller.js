@@ -1,5 +1,32 @@
 var Elect = require('../models/elect.model')
 const excel = require('node-excel-export');
+var Station = require('../models/station.model')
+var Cabinet = require('../models/cabinet.model')
+
+module.exports.overview = function(req, res) {
+	Station.find().then(function(stations){
+		res.render('elect/overview', {
+			stations: stations
+		});
+	});
+};
+
+module.exports.station = function(req, res) {
+	var id = req.params.id;
+	Station.findById(id).then(function(station){
+		res.render('elect/station', {
+			station: station
+		});
+	});
+};
+
+
+
+// Elect.find().sort({ _id: -1 }).limit(10).then(function(elects){
+// 		res.render('elect/list', {
+// 			elects: elects
+// 		});
+// 	});
 
 module.exports.list = function(req, res) {
 	Elect.find().sort({ _id: -1 }).limit(10).then(function(elects){

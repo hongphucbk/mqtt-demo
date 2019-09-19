@@ -1,0 +1,40 @@
+<% layout('../layout/index') %>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<div class="panel-heading">
+	All stations
+	<span style="float: right;"><a href="/elect/add">Add new station</a></span>
+</div>
+<div class="panel-body">
+<div class="container">
+	<div class="row">
+		<% stations.forEach(function(station) { %>
+			<!-- <a href="/overview/detail/<%= station.id %>">
+				<div class="station"></div>
+			</a> -->
+			<div class="col-sm-6 col-md-3">
+			    <div class="thumbnail">
+			      <!-- <img src="..." alt="..."> -->
+			      <div class="caption" style="text-align: center;">
+			        <h3><%= station.description %></h3>
+			        <p><%= station.address %></p>
+			        <p>
+			        	<a href="/elect/station/<%= station.id %>" class="btn btn-success" role="button">Detail</a> 
+			        	<!-- <a href="#" class="btn btn-default" role="button">Button</a> -->
+			        </p>
+			      </div>
+			    </div>
+			  </div>
+		<% }); %>
+
+	  
+	</div>
+       
+    </div>
+</div>
+

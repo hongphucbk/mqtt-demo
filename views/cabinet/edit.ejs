@@ -1,0 +1,58 @@
+<% layout('../layout/index') %>
+
+<div class="panel-heading">
+	Cabinet Edit: <%= cabinet.description %>
+	<span style="float: right;"><a href="/cabinet">Home</a></span>
+</div>
+<div class="panel-body">
+<form method="post" action="/cabinet/edit/<%= cabinet.id %>">
+  <div class="form-row">
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Station</label>
+      <select class="form-control" name="station_id">
+        <% stations.forEach(function(station){ %>
+          <option value="<%= station.id %>"><%= station.description %></option>
+            
+        <% }) %>
+        
+      </select>
+    </div>
+
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Name</label>
+      <input type="text" class="form-control" name="name" placeholder="Name..."
+        value="<%= cabinet.name %>">
+    </div>
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Description</label>
+      <input type="text" class="form-control" name="description" placeholder="Description..."
+        value="<%= cabinet.description %>" required>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label>Address</label>
+      <input type="text" class="form-control" name="address" placeholder="Address..."
+        value="<%= cabinet.address %>">
+    </div>
+    <div class="col-md-4 mb-3 col-sm-6">
+      <label>Information</label>
+      <input type="text" class="form-control" name="information" placeholder="Information..."
+        value="<%= cabinet.information %>" />
+    </div>
+    <div class="col-md-2 mb-3 col-sm-6">
+      <label>Note</label>
+      <input type="text" class="form-control" name="note" placeholder="Note..."
+        value="<%= cabinet.note %>" >
+    </div>
+    
+   </div>
+    
+  <div class="form-row">
+    <div class="col-md-12 mb-3 col-sm-6">
+    <br>
+      <button class="btn btn-success" type="submit">Edit </button>
+    </div>
+  </div>
+ 
+</form>
+</div>
+

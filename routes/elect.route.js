@@ -9,11 +9,13 @@ var validate = require('../validate/station.validate');
 router.get('/', controller.overview);
 router.get('/station/:id', controller.station);
 
-router.get('/rt', controller.listRT);
+router.get('/station/:id/cabinet/:cabinet_id', controller.cabinet);
 
-router.get('/excel', controller.listExcel);
+// router.get('/rt', controller.listRT);
 
-router.get('/control', controller.listControl);
+// router.get('/excel', controller.listExcel);
+
+// router.get('/control', controller.listControl);
 
 // router.get('/add', controller.getAdd);
 // router.post('/add', validate.postAdd, controller.postAdd);

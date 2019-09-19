@@ -24,16 +24,20 @@
 		<img src="/img/a.jpg" style="width: 100%">
 
 		<% cabinets.forEach(function(cabinet) { %>		
-			<p class="display" style="top: calc(<%= cabinet.posy + 0%>%);left: calc(<%= cabinet.posx %>vh);" id="Uab">Uab  = 200 V</p>
-			<p class="display" style="top: calc(<%= cabinet.posy + 3%>%);left: calc(<%= cabinet.posx %>vh);" id="Ubc">Ubc  = 200 V</p>
-			<p class="display" style="top: calc(<%= cabinet.posy + 6%>%);left: calc(<%= cabinet.posx %>vh);" id="Uca">Uca  = 210 V</p>
-			<p class="display" style="top: calc(<%= cabinet.posy + 9%>%);left: calc(<%= cabinet.posx %>vh);" id="Iab">Iab  = 2.5 A</p>
-			<p class="display" style="top: calc(<%= cabinet.posy + 12%>%);left: calc(<%= cabinet.posx %>vh);" id="Iab">Ibc  = 2.5 A</p>
-			<p class="display" style="top: calc(<%= cabinet.posy + 15%>%);left: calc(<%= cabinet.posx %>vh);" id="Ica">Iab  = 2.5 A</p>
-			<p class="display" style="top: calc(<%= cabinet.posy + 18%>%);left: calc(<%= cabinet.posx %>vh);" id="F">F    = 2.5 A</p>
-			<p class="display" style="top: calc(<%= cabinet.posy + 21%>%);left: calc(<%= cabinet.posx %>vh);" id="Iab">PF   = 2.5 A</p>
-			<p class="display" style="top: calc(<%= cabinet.posy + 24%>%);left: calc(<%= cabinet.posx %>vh);" id="Kwhd">KWh  = 725 Kwh (Day)</p>
-			<p class="display" style="top: calc(<%= cabinet.posy + 27%>%);left: calc(<%= cabinet.posx %>vh);" id="Kwht">KWh  = 725 Kwh (Total</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 0%>%);left: calc(<%= cabinet.posx %>vw);" id="Uab">Uab  = 200 V</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 3%>%);left: calc(<%= cabinet.posx %>vw);" id="Ubc">Ubc  = 200 V</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 6%>%);left: calc(<%= cabinet.posx %>vw);" id="Uca">Uca  = 210 V</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 9%>%);left: calc(<%= cabinet.posx %>vw);" id="Iab">Iab  = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 12%>%);left: calc(<%= cabinet.posx %>vw);" id="Ibc">Ibc  = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 15%>%);left: calc(<%= cabinet.posx %>vw);" id="Ica">Iab  = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 18%>%);left: calc(<%= cabinet.posx %>vw);" id="F">F    = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 21%>%);left: calc(<%= cabinet.posx %>vw);" id="PF">PF   = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 24%>%);left: calc(<%= cabinet.posx %>vw);" id="Kwhd">KWh  = 725 Kwh (Day)</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 27%>%);left: calc(<%= cabinet.posx %>vw);" id="Kwht">KWh  = 725 Kwh (Total</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 31%>%);left: calc(<%= cabinet.posx %>vw);" id="Kwht">
+				<a href="/elect/station/<%= station.id %>/cabinet/<%= cabinet.id %>"><label class="label label-info">Detail...</label>
+				</a>
+			</p>
 		<% }); %>
 	</div>
 	<div id="map"></div>

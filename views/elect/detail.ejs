@@ -1,15 +1,87 @@
 <% layout('../layout/index') %>
 
 <style>
-    
+    .display_value{
+      style="font-size: 24px; text-align: center;"
+    }
+
+    .cl_blue{
+      color: blue;
+    }
 </style>
 
 <div class="panel-heading">
-	Station:  <%= station.description %> - Cabinet: <%= cabinet.description %>
+	Station:  <%= station.description %> - Cabinet: <span class="cl_blue"><%= cabinet.description %></span>
 	<span style="float: right;"><a href="/users/add">Add new user</a></span>
 </div>
 <div class="panel-body">
-  d
+  <!-- Uab - Ubc - Uca -->
+  <div class="row">
+    <div class="col-md-3" style="text-align: center;">
+      <h3>Uab</h3>
+      <canvas id="<%= cabinet.div_id %>gauseUab"></canvas>
+      <div id="<%= cabinet.div_id %>valueUab" class="preview-textfield reset display_value"> V</div>
+    </div>
+
+    <div class="col-md-3" style="text-align: center;">
+      <h3>Ubc</h3>
+      <canvas id="<%= cabinet.div_id %>gauseUbc"></canvas>
+      <div id="<%= cabinet.div_id %>valueUbc" class="preview-textfield reset display_value"> V</div>
+    </div>
+
+    <div class="col-md-3" style="text-align: center;">
+      <h3>Uca</h3>
+      <canvas id="<%= cabinet.div_id %>gauseUca"></canvas>
+      <div id="<%= cabinet.div_id %>valueUca" class="preview-textfield reset display_value"> V</div>
+    </div>
+  </div>
+  <!-- Iab - Ubc - Uca -->
+  <div class="row">
+    <div class="col-md-3" style="text-align: center;">
+      <h3>Iab</h3>
+      <canvas id="<%= cabinet.div_id %>gauseIab"></canvas>
+      <div id="<%= cabinet.div_id %>valueIab" class="preview-textfield reset display_value"> A</div>
+    </div>
+
+    <div class="col-md-3" style="text-align: center;">
+      <h3>Ibc</h3>
+      <canvas id="<%= cabinet.div_id %>gauseIbc"></canvas><br>
+      <div id="<%= cabinet.div_id %>valueUbc" class="preview-textfield reset display_value"> A</div>
+    </div>
+
+    <div class="col-md-3" style="text-align: center;">
+      <h3>Ica</h3>
+      <canvas id="<%= cabinet.div_id %>gauseIca"></canvas>
+      <div id="<%= cabinet.div_id %>valueIca" class="preview-textfield reset display_value"> A</div>
+    </div>
+  </div>
+  <!-- P - PF - AD - A -->
+  <div class="row">
+    <div class="col-md-3" style="text-align: center;">
+      <h3>F</h3>
+      <canvas id="<%= cabinet.div_id %>gauseF"></canvas>
+      <div id="<%= cabinet.div_id %>valueF" class="preview-textfield reset display_value">Hz</div>
+    </div>
+
+    <div class="col-md-3" style="text-align: center;">
+      <h3>PF</h3>
+      <canvas id="<%= cabinet.div_id %>gausePF"></canvas><br>
+      <div id="<%= cabinet.div_id %>valuePF" class="preview-textfield reset display_value"></div>
+    </div>
+
+    <div class="col-md-3" style="text-align: center;">
+      <h3>A (In day)</h3>
+      <canvas id="<%= cabinet.div_id %>gauseAD"></canvas>
+      <div id="<%= cabinet.div_id %>valueAD" class="preview-textfield reset display_value">Kwh</div>
+    </div>
+    <div class="col-md-3" style="text-align: center;">
+      <h3>A (Total)</h3>
+      <canvas id="<%= cabinet.div_id %>gauseAT"></canvas>
+      <div id="<%= cabinet.div_id %>valueAT" class="preview-textfield reset display_value">Kwh</div>
+    </div>
+  </div>
+
+  
 </div>
 	
 
@@ -19,10 +91,10 @@
     var socket = io("http://localhost:3001");
     socket.emit('thongbao','hello');
     socket.on('data', function(msg){
-      	document.getElementById("Uab").innerHTML = msg.Uab ;
-      	document.getElementById("Ubc").innerHTML = msg.Ubc ;
-      	document.getElementById("Uca").innerHTML = msg.Uca ;
-      	document.getElementById("Iab").innerHTML = msg.Iab ;
+      	// document.getElementById("Uab").innerHTML = msg.Uab ;
+      	// document.getElementById("Ubc").innerHTML = msg.Ubc ;
+      	// document.getElementById("Uca").innerHTML = msg.Uca ;
+      	// document.getElementById("Iab").innerHTML = msg.Iab ;
       	// document.getElementById("Ibc").innerHTML = msg.Ibc ;
       	// document.getElementById("Ica").innerHTML = msg.Ica ;
       	// document.getElementById("Cosphi").innerHTML = msg.Cosphi ;
@@ -38,8 +110,117 @@
 </script>
 
 <script type="text/javascript">
-      
+
         
 
       
+</script>
+<script type="text/javascript">
+  var opts = {
+    lines: 5,
+    angle: -0.15,
+    lineWidth: 0.3,
+    pointer: {
+      length: 0.4,
+      strokeWidth: 0.035,
+      color: '#000000'
+    },
+    staticLabels: {
+      font: "10px sans-serif",  // Specifies font
+      labels: [0, 50, 100, 150, 200, 250],  // Print labels at these values
+      color: "#000000",  // Optional: Label text color
+      fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+    },
+
+    limitMax: 'false', 
+    percentColors: [[0.0, "#a9d70b" ], [0.50, "#f9c802"], [1.0, "#ff0000"]], // !!!!
+    strokeColor: '#E0E0E0',
+    generateGradient: true
+  };
+
+  var opts_I = {
+    lines: 5,
+    angle: -0.15,
+    lineWidth: 0.3,
+    pointer: {
+      length: 0.4,
+      strokeWidth: 0.035,
+      color: '#000000'
+    },
+    staticLabels: {
+      font: "10px sans-serif",  // Specifies font
+      labels: [0, 20, 40, 60, 80, 100],  // Print labels at these values
+      color: "#000000",  // Optional: Label text color
+      fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+    },
+
+    limitMax: 'false', 
+    percentColors: [[0.0, "#a9d70b" ], [0.50, "#f9c802"], [1.0, "#ff0000"]], // !!!!
+    strokeColor: '#E0E0E0',
+    generateGradient: true
+  };
+
+  var div_id = "<%- cabinet.div_id %>"
+  
+  // Uab
+    var target = document.getElementById(div_id + 'gauseUab');
+    var gaugeUab = new Gauge(target).setOptions(opts);
+    gaugeUab.maxValue = 250;
+    gaugeUab.animationSpeed = 32;
+    gaugeUab.set(54.23);
+  // Ubc
+    var target = document.getElementById(div_id + 'gauseUbc');
+    var gaugeUbc = new Gauge(target).setOptions(opts);
+    gaugeUbc.maxValue = 250;
+    gaugeUbc.animationSpeed = 32;
+    gaugeUbc.set(53.23);
+  // Uca
+    var target = document.getElementById(div_id + 'gauseUca');
+    var gaugeUca = new Gauge(target).setOptions(opts);
+    gaugeUca.maxValue = 250;
+    gaugeUca.animationSpeed = 32;
+    gaugeUca.set(53.23);
+  // Iab
+      var target = document.getElementById(div_id + 'gauseIab');
+      var gaugeIab = new Gauge(target).setOptions(opts_I);
+      gaugeIab.maxValue = 100;
+      gaugeIab.animationSpeed = 32;
+      gaugeIab.set(19.23);
+  // Ibc
+    var target = document.getElementById(div_id + 'gauseIbc');
+    var gaugeIbc = new Gauge(target).setOptions(opts_I);
+    gaugeIbc.maxValue = 100;
+    gaugeIbc.animationSpeed = 32;
+    gaugeIbc.set(12.23);
+  // Ica
+    var target = document.getElementById(div_id + 'gauseIca');
+    var gaugeIca = new Gauge(target).setOptions(opts_I);
+    gaugeIca.maxValue = 100;
+    gaugeIca.animationSpeed = 32;
+    gaugeIca.set(53.23);
+  // F
+    var target = document.getElementById(div_id + 'gauseF');
+    var gaugeF = new Gauge(target).setOptions(opts_I);
+    gaugeF.maxValue = 100;
+    gaugeF.animationSpeed = 32;
+    gaugeF.set(53.23);
+  // PF
+    var target = document.getElementById(div_id + 'gausePF');
+    var gausePF = new Gauge(target).setOptions(opts_I);
+    gausePF.maxValue = 100;
+    gausePF.animationSpeed = 32;
+    gausePF.set(53.23);
+  // A
+    var target = document.getElementById(div_id + 'gauseAD');
+    var gauseAD = new Gauge(target).setOptions(opts_I);
+    gauseAD.maxValue = 100;
+    gauseAD.animationSpeed = 32;
+    gauseAD.set(53.23);
+  // A 
+    var target = document.getElementById(div_id + 'gauseAT');
+    var gauseAT = new Gauge(target).setOptions(opts_I);
+    gauseAT.maxValue = 100;
+    gauseAT.animationSpeed = 32;
+    gauseAT.set(53.23);
+
 </script>

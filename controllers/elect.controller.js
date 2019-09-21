@@ -37,6 +37,19 @@ module.exports.cabinet = function(req, res) {
 	});
 };
 
+module.exports.chart = function(req, res) {
+	var id = req.params.id;
+	var cabinet_id = req.params.cabinet_id;
+	Station.findById(id).then(function(station){
+		Cabinet.findById(cabinet_id).then(function(cabinet){
+			res.render('elect/chart', {
+				station: station,
+				cabinet: cabinet,
+			});
+		});
+	});
+};
+
 // Elect.find().sort({ _id: -1 }).limit(10).then(function(elects){
 // 		res.render('elect/list', {
 // 			elects: elects

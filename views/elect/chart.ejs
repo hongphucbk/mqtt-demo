@@ -1,0 +1,227 @@
+<% layout('../layout/index') %>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css">
+<style>
+    .display_value{
+      style="font-size: 24px; text-align: center;"
+    }
+
+    .cl_blue{
+      color: blue;
+    }
+</style>
+
+<div class="panel-heading">
+	Station:  <%= station.description %> - Cabinet: <span class="cl_blue"><%= cabinet.description %></span>
+	<span style="float: right;"><a href="/users/add">Add new user</a></span>
+</div>
+<div class="panel-body">
+  <div class="col-md-12">
+  <canvas id="myChart" width="1100px" height="400"></canvas>
+  
+</div>
+  
+</div>
+	
+
+
+<script type="text/javascript">
+	var now = new Date();
+    var socket = io("http://localhost:3001");
+    socket.emit('thongbao','hello');
+    socket.on('data', function(msg){
+      	// document.getElementById("Uab").innerHTML = msg.Uab ;
+      	// document.getElementById("Ubc").innerHTML = msg.Ubc ;
+      	// document.getElementById("Uca").innerHTML = msg.Uca ;
+      	// document.getElementById("Iab").innerHTML = msg.Iab ;
+      	// document.getElementById("Ibc").innerHTML = msg.Ibc ;
+      	// document.getElementById("Ica").innerHTML = msg.Ica ;
+      	// document.getElementById("Cosphi").innerHTML = msg.Cosphi ;
+      	// document.getElementById("Hz").innerHTML = msg.Hz ;
+      	// document.getElementById("Kwh_Day").innerHTML = msg.Kwh_Day ;
+      	// document.getElementById("Kwh_Total").innerHTML = msg.Kwh_Total ;
+      	// document.getElementById("Timestamp").innerHTML = formatDate(new Date());
+      	// console.log(msg);
+      	// gauge.set(msg.Uab);
+      	// document.getElementById("preview-textfield").innerHTML = msg.Uab + " V";
+
+    });
+</script>
+
+
+<script type="text/javascript">
+  var opts = {
+    lines: 5,
+    angle: -0.15,
+    lineWidth: 0.3,
+    pointer: {
+      length: 0.4,
+      strokeWidth: 0.035,
+      color: '#000000'
+    },
+    staticLabels: {
+      font: "10px sans-serif",  // Specifies font
+      labels: [0, 50, 100, 150, 200, 250],  // Print labels at these values
+      color: "#000000",  // Optional: Label text color
+      fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+    },
+
+    limitMax: 'false', 
+    percentColors: [[0.0, "#a9d70b" ], [0.50, "#f9c802"], [1.0, "#ff0000"]], // !!!!
+    strokeColor: '#E0E0E0',
+    generateGradient: true
+  };
+
+  var opts_I = {
+    lines: 5,
+    angle: -0.15,
+    lineWidth: 0.3,
+    pointer: {
+      length: 0.4,
+      strokeWidth: 0.035,
+      color: '#000000'
+    },
+    staticLabels: {
+      font: "10px sans-serif",  // Specifies font
+      labels: [0, 20, 40, 60, 80, 100],  // Print labels at these values
+      color: "#000000",  // Optional: Label text color
+      fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+    },
+
+    limitMax: 'false', 
+    percentColors: [[0.0, "#a9d70b" ], [0.50, "#f9c802"], [1.0, "#ff0000"]], // !!!!
+    strokeColor: '#E0E0E0',
+    generateGradient: true
+  };
+
+  var div_id = "<%- cabinet.div_id %>"
+</script>
+<script type="text/javascript">
+  var now = Date.now()
+  console.log(now);
+  var next = new Date(now + (1000));
+  console.log(next);
+  var data1 = 40;
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+  var ctx = document.getElementById("myChart").getContext("2d");
+
+  var data = {
+    labels: ["January", "February", "March", "April", "May", "June", "July", "a", "a", "a", "a", "a", "a",
+            "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a" ],
+    datasets: [{
+      label: "My First dataset",
+      fillColor: "rgba(220,220,220,0.4)",
+      strokeColor: "rgba(220,220,220,1)",
+      pointColor: "rgba(220,220,220,1)",
+      pointStrokeColor: "#fff",
+      pointHighlightFill: "#fff",
+      pointHighlightStroke: "rgba(220,220,220,1)",
+      data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 55, 40]
+    }, {
+      label: "My Second dataset",
+      fillColor: "rgba(151,187,205,0.2)",
+      strokeColor: "rgba(151,187,205,1)",
+      pointColor: "rgba(151,187,205,1)",
+      pointStrokeColor: "#fff",
+      pointHighlightFill: "#fff",
+      pointHighlightStroke: "rgba(151,187,205,1)",
+      data: [28, 48, 40, 19, 86, 27, 90, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 55, 40]
+    }]
+  };
+  var options = {
+    animation: false,
+    //Boolean - If we want to override with a hard coded scale
+    scaleOverride: false,
+    //** Required if scaleOverride is true **
+    //Number - The number of steps in a hard coded scale
+    scaleSteps: 1,
+    //Number - The value jump in the hard coded scale
+    scaleStepWidth: 1,
+    //Number - The scale starting value
+    scaleStartValue: 0,
+
+    legend: {
+            display: true,
+            labels: {
+                fontColor: 'rgb(255, 99, 132)'
+            }
+          },
+    title: {
+            display: true,
+            text: 'Custom Chart Title'
+        },
+    scales: {
+            yAxes: [{
+                ticks: {
+                    suggestedMin: 50,
+                    suggestedMax: 100
+                }
+            }]
+        }
+  };
+
+  var myLineChart = new Chart(ctx).Line(data, options);
+
+  setInterval(function() {
+    setData(data.datasets[0].data);
+    setData(data.datasets[1].data);
+    setLabels(data.labels);
+
+    var myLineChart = new Chart(ctx).Line(data, options);
+  }, 1000);
+
+  function setLabels(labels) {
+    next.setSeconds(next.getSeconds() + 1);
+    var nextMonthName = formatDate(next);
+    var strLb = nextMonthName.toString();
+    labels.push(strLb);
+    labels.shift();
+    console.log(labels)
+  }
+
+  
+
+  function setData(data) {
+    //data.push(Math.floor(Math.random() * 1) + 20);
+    
+    data.push(Math.random() * 2 + 20);
+    //nsole.log(data1.toFixed(2));
+    //data.push(data1.toFixed(2));
+    data.shift();
+  }
+    
+  
+
+});
+        
+
+      
+</script>
+<script type="text/javascript">
+  function formatDate(date) {
+    var monthNames = [
+      "January", "February", "March",
+      "April", "May", "June", "July",
+      "August", "September", "October",
+      "November", "December"
+    ];
+
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    return hour + ':' + minute +  ':' +second;
+    // return day + ' ' + monthNames[monthIndex] + ' ' + year + ' ' + hour + ':' + minute +  ':' +second;
+  }
+</script>
+<script type="text/javascript">
+  var socket = io("http://localhost:3001");
+    
+    socket.on('data', function(msg){
+        //nsole.log(msg);
+        data1 = msg;
+      })
+</script>

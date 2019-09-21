@@ -39,9 +39,13 @@ var electRouter = require('./routes/elect.route');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useFindAndModify: false});
 
-
+var Station = require('./models/station.model');
 app.get('/', function(req, res) {
-	res.render('dashboard/list');
+	Station.find().then(function(stations){
+		res.render('overview/maps', {
+			stations: stations
+		})
+	})
 }) 
 
 // Router -----------------------------------------------------------
@@ -126,6 +130,18 @@ server.on('published',function getdata(packet,client) {
 		// console.log('data: ', packet.topic);
 		var data = packet.payload.toString();
 		console.log("Đèn phòng khách đang: " + data)
+	}
+
+	if(packet.topic =='PLC/Data') 
+	{
+		// console.log('data: ', packet.topic);
+		console.log("Data Goc: " + typeof(packet.payload))
+		var data = packet.payload.toString();
+		console.log("Data Type nhan duoc la: " + typeof(data))
+		console.log("Data nhan duoc la: " + JSON.parse(data))
+		var data_json = JSON.parse(data)
+		console.log("Data nhan duoc la: " + data_json.TEST1 )
+		io.emit('data', data_json.TEST1);
 	}
 
 	

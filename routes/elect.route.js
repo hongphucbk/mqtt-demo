@@ -10,6 +10,7 @@ router.get('/', controller.overview);
 router.get('/station/:id', controller.station);
 
 router.get('/station/:id/cabinet/:cabinet_id', controller.cabinet);
+router.get('/station/:id/cabinet/:cabinet_id/chart', controller.chart);
 
 // router.get('/rt', controller.listRT);
 

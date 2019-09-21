@@ -13,7 +13,7 @@
 <style type="text/css">
 	.display{
 		position: absolute;
-		font-size: 7;
+		/*font-size: 7;*/
 	}
 </style>
 <!--  -->
@@ -36,6 +36,8 @@
 			<p class="display" style="top: calc(<%= cabinet.posy + 27%>%);left: calc(<%= cabinet.posx %>vw);" id="Kwht">KWh  = 725 Kwh (Total</p>
 			<p class="display" style="top: calc(<%= cabinet.posy + 31%>%);left: calc(<%= cabinet.posx %>vw);" id="Kwht">
 				<a href="/elect/station/<%= station.id %>/cabinet/<%= cabinet.id %>"><label class="label label-info">Detail...</label>
+				</a>
+				<a href="/elect/station/<%= station.id %>/cabinet/<%= cabinet.id %>/chart"><label class="label label-info">Chart...</label>
 				</a>
 			</p>
 		<% }); %>

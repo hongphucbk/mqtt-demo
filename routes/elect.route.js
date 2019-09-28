@@ -12,6 +12,8 @@ router.get('/station/:id', controller.station);
 router.get('/station/:id/cabinet/:cabinet_id', controller.cabinet);
 router.get('/station/:id/cabinet/:cabinet_id/chart', controller.chart);
 
+router.get('/station/:id/cabinet/:cabinet_id/history', controller.history);
+
 // router.get('/rt', controller.listRT);
 
 // router.get('/excel', controller.listExcel);

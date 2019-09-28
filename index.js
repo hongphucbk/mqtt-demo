@@ -34,6 +34,7 @@ var stationRouter = require('./routes/station.route');
 var cabinetRouter = require('./routes/cabinet.route');
 var overviewRouter = require('./routes/overview.route');
 var electRouter = require('./routes/elect.route');
+
 //-------------------------------------------------------------------
 
 var mongoose = require('mongoose');
@@ -55,6 +56,7 @@ app.use('/station', stationRouter);
 app.use('/cabinet', cabinetRouter);
 app.use('/overview', overviewRouter);
 app.use('/elect', electRouter);
+
 
 //-------------------------------------------------------------------
 
@@ -84,24 +86,63 @@ server.on('ready', function(){
 	console.log("Server Mosca MQTT ready for PLC " + settings.port + ", for web port " + settings.http.port);
 });
 
-var Datatest = require('./models/elect.model')
-
+var Data = require('./models/elect.model')
+let arrCabinet = ["MSB1", "MSB2","SB_B2"]
 //find when a message .is received
 server.on('published',function getdata(packet,client) {
-	
 	if(packet.topic =='Data/MSB_01') 
+	{
+		// console.log('data: ', packet.topic);
+		var data = packet.payload.toString();
+		var jsondata = JSON.parse(data);
+		// io.emit('data', jsondata);
+		var now = new Date();
+
+		var saveData = { 	"station" : jsondata.Area,
+							"name" : "MSB01",
+							"value" : jsondata,
+							"timestamp" : now
+						}
+		Data.insertMany(saveData, function(err) {
+			if (err) return handleError(err);
+		});
+		console.log('receive: ', saveData);
+	}
+
+	if(packet.topic =='Data/MSB_02') 
 	{
 		// console.log('data: ', packet.topic);
 		var data = packet.payload.toString();
 		var jsondata = JSON.parse(data);
 		io.emit('data', jsondata);
 		var now = new Date();
-
-		var saveData = { 	"name" : "MSB01",
+		var saveData = { 	"station" : jsondata.Area,
+							"name" : "MSB02",
 							"value" : jsondata,
 							"timestamp" : now
 						}
-				console.log('receive: ', saveData);
+		Data.insertMany(saveData, function(err) {
+			if (err) return handleError(err);
+		});
+		console.log('receive: ', saveData);
+	}
+
+	if(packet.topic =='Data/SB_B2') 
+	{
+		// console.log('data: ', packet.topic);
+		var data = packet.payload.toString();
+		var jsondata = JSON.parse(data);
+		io.emit('data', jsondata);
+		var now = new Date();
+		var saveData = { 	"station" : jsondata.Area,
+							"name" : "SB_B2",
+							"value" : jsondata,
+							"timestamp" : now
+						}
+		Data.insertMany(saveData, function(err) {
+			if (err) return handleError(err);
+		});
+		console.log('receive: ', saveData);
 	}
 
 	if(packet.topic =='topic1/write') 

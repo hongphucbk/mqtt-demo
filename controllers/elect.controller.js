@@ -2,6 +2,7 @@ var Elect = require('../models/elect.model')
 const excel = require('node-excel-export');
 var Station = require('../models/station.model')
 var Cabinet = require('../models/cabinet.model')
+var moment = require('moment');
 
 module.exports.overview = function(req, res) {
 	Station.find().then(function(stations){
@@ -19,6 +20,7 @@ module.exports.station = function(req, res) {
 			res.render('elect/station', {
 				station: station,
 				cabinets: cabinets,
+
 			});
 		});
 	});
@@ -45,6 +47,24 @@ module.exports.chart = function(req, res) {
 			res.render('elect/chart', {
 				station: station,
 				cabinet: cabinet,
+			});
+		});
+	});
+};
+
+module.exports.history = function(req, res) {
+	var id = req.params.id;
+	var cabinet_id = req.params.cabinet_id;
+	Station.findById(id).then(function(station){
+		Cabinet.findById(cabinet_id).then(function(cabinet){
+			Elect.find({ name: cabinet.name }).then(function(elects){
+				console.log(elects)
+				res.render('elect/history', {
+					station: station,
+					cabinet: cabinet,
+					elects: elects,
+					moment: moment,
+				});
 			});
 		});
 	});

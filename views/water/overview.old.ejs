@@ -1,0 +1,421 @@
+<% layout('../layout/index') %>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="/js/d3.v3.min.js"></script>
+<!-- Chart -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css">
+<!-- Datatable -->
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<style>
+    .display_value{
+      style="font-size: 24px; text-align: center;"
+    }
+
+    .cl_blue{
+      color: blue;
+    }
+
+    .filterable {
+	    margin-top: 15px;
+		}
+		.filterable .panel-heading .pull-right {
+		    margin-top: -20px;
+		}
+		.filterable .filters input[disabled] {
+		    background-color: transparent;
+		    border: none;
+		    cursor: auto;
+		    box-shadow: none;
+		    padding: 0;
+		    height: auto;
+		}
+		.filterable .filters input[disabled]::-webkit-input-placeholder {
+		    color: #333;
+		}
+		.filterable .filters input[disabled]::-moz-placeholder {
+		    color: #333;
+		}
+		.filterable .filters input[disabled]:-ms-input-placeholder {
+		    color: #333;
+		}
+</style>
+
+<div class="panel-heading">
+	All water stations
+	<span style="float: right;"><a href="/water/add">Add new station</a></span>
+</div>
+<div class="panel-body">
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6 col-md-3">
+			<h3 style="text-align: center;">BỒN 1</h3>
+			<svg id="fillgauge1" width="97%" height="200"></svg>
+
+		</div>
+		<div class="col-sm-6 col-md-3">
+			<h3 style="text-align: center;">BỒN 2</h3>
+			<svg id="fillgauge2" width="97%" height="200"></svg>
+		</div>
+	  <div class="col-md-6">
+		  <canvas id="myChart" width="600px" height="300px"></canvas> 
+		</div>
+		<div class="col-md-12">
+		  <div class="col-md-12">
+		  	
+			</div>
+			<div class="col-md-6">
+			</div>
+		</div>
+	</div>
+       
+  </div>
+  <div class="row">
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading">
+                <h3 class="panel-title">Alarm</h3>
+                <div class="pull-right">
+                    <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                </div>
+            </div>
+            <table class="table">
+            <thead>
+                <tr class="filters">
+                    <th><input type="text" class="form-control" placeholder="Time" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Name" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Value" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Status" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Action" disabled></th>
+                </tr>
+            </thead>
+            <tbody>
+              <% waters.forEach(function(water) { %>
+                <tr>
+                    <td><%= moment(water.timestamp).format('DD-MMM-YYYY HH:mm:ss') %></td>
+                    <td>Bồn <%= water.name %></td>
+                    <td><%= water.data.toFixed(2) %></td>
+                    <td>
+                      <%if (water.data > 80) { %>
+                        <span class="label label-danger">Hight</span>
+                      <%}else{%>
+                        <span class="label label-warning">Low</span>
+                      <% } %>
+
+                      <%if (water.acknowleadge == 1) { %>
+		                    <span class="label label-success">Acknowleadged</span>
+		                  <% } %>
+                    </td>  
+                    <td>
+                      <%if (water.data > 80) { %>
+                        <span class="label label-info">Please check !!</span>
+                        <a href="/water/acknowleadge/<%= water.id %>"><span class="label label-info">Acknowleadge</span> </a>
+                      <%}else{%>
+                        <!-- <span class="label label-success">Good</span></td> -->
+                      <% } %>
+                    </td>
+                </tr>
+              <% }); %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Alarm</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+          <% waters.forEach(function(water) { %>
+            <tr>
+                <td><%= moment(water.timestamp).format('DD-MMM-YYYY HH:mm:ss') %></td>
+                <td>Bồn <%= water.name %></td>
+                <td><%= water.data.toFixed(2) %></td>
+                <td>
+                  <%if (water.data > 80) { %>
+                    <span class="label label-danger">Hight</span>
+                  <% } %>
+                  <%if (water.data < 20) { %>
+                    <span class="label label-warning">Low</span>
+                  <% } %>
+                </td>
+                <td>
+                  <%if (water.data > 80) { %>
+                    <span class="label label-info">Please check !!</span>
+                    
+                  <%}else{%>
+                    <!-- <span class="label label-success">Good</span></td> -->
+                  <% } %>
+                </td>
+                <td></td>
+            </tr>
+          <% }); %>
+            
+        </tbody>
+        <!-- <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot> -->
+      </table>
+    </div>      
+  </div>
+</div>
+
+
+
+
+
+<!-- Get init data -->
+<script type="text/javascript">
+	var objData1 = [];
+	var objData2 = [];
+	var datalabel1 = [];
+	let temp1 = "";
+	<% oldWaters1.forEach(function(water) { %>
+		var dataOld1 = <%= water.data %>
+		objData1.push(dataOld1);
+	  temp1 = "<%= moment(water.timestamp).format('HH:mm:ss') %>"
+    datalabel1.push(temp1)
+    
+  <% }); %>
+  <% oldWaters2.forEach(function(water) { %>
+		var dataOld2 = <%= water.data %>
+		objData2.push(dataOld2);
+  <% }); %>
+  datalabel1 = datalabel1.reverse();
+  var level1;
+  var level2;
+	level1 = objData1[0]; 
+	level2 = objData2[0];
+  objData1 = objData1.reverse();
+  objData2 = objData2.reverse();
+  // console.log('data1 = ' + typeof(data1))
+</script>
+
+<!-- Gause -->
+<script type="text/javascript">
+	var config1 = liquidFillGaugeDefaultSettings();
+  config1.displayPercent = false;
+  var gauge1 = loadLiquidFillGauge("fillgauge1", level1, config1);
+  
+
+  var config2 = liquidFillGaugeDefaultSettings();
+  config2.displayPercent = false;
+  var gauge2 = loadLiquidFillGauge("fillgauge2", level2, config2);    
+  
+  function NewValue(){
+      if(Math.random() > .5){
+          return Math.round(Math.random()*100);
+      } else {
+          return (Math.random()*100).toFixed(1);
+      }
+  }
+</script>
+
+<!-- Chart Date time  -->
+<script type="text/javascript">
+  var now = Date.now()
+  //console.log(now);
+  var next = new Date(now + (1000));
+  //console.log(next);
+
+  function formatDate(date) {
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    return hour + ':' + minute +  ':' +second;
+  }
+</script>
+      
+<!-- Socket IO -->
+<script type="text/javascript">
+  let socket = io("http://localhost:3001");
+  socket.emit('thongbao','hello');
+  socket.on('level1', function(msg){
+    	// document.getElementById("Uab").innerHTML = msg.Uab ;
+    	// document.getElementById("Ubc").innerHTML = msg.Ubc ;
+    	// document.getElementById("Uca").innerHTML = msg.Uca ;
+    	// document.getElementById("Iab").innerHTML = msg.Iab ;
+    	// document.getElementById("Ibc").innerHTML = msg.Ibc ;
+    	// document.getElementById("Ica").innerHTML = msg.Ica ;
+    	// document.getElementById("Cosphi").innerHTML = msg.Cosphi ;
+    	// document.getElementById("Hz").innerHTML = msg.Hz ;
+    	// document.getElementById("Kwh_Day").innerHTML = msg.Kwh_Day ;
+    	// document.getElementById("Kwh_Total").innerHTML = msg.Kwh_Total ;
+    	// document.getElementById("Timestamp").innerHTML = formatDate(new Date());
+    	//console.log(msg);
+    	level1 = msg;
+    	//gauge1.set(msg);
+    	gauge1.update(msg);
+    	// document.getElementById("preview-textfield").innerHTML = msg.Uab + " V";
+
+  });
+  socket.on('level2', function(msg){
+  		level2 = msg;
+    	gauge2.update(msg);
+  });
+</script>
+
+<!-- Filter table -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.filterable .btn-filter').click(function(){
+        var $panel = $(this).parents('.filterable'),
+        $filters = $panel.find('.filters input'),
+        $tbody = $panel.find('.table tbody');
+        if ($filters.prop('disabled') == true) {
+            $filters.prop('disabled', false);
+            $filters.first().focus();
+        } else {
+            $filters.val('').prop('disabled', true);
+            $tbody.find('.no-result').remove();
+            $tbody.find('tr').show();
+        }
+    });
+
+    $('.filterable .filters input').keyup(function(e){
+        /* Ignore tab key */
+        var code = e.keyCode || e.which;
+        if (code == '9') return;
+        /* Useful DOM data and selectors */
+        var $input = $(this),
+        inputContent = $input.val().toLowerCase(),
+        $panel = $input.parents('.filterable'),
+        column = $panel.find('.filters th').index($input.parents('th')),
+        $table = $panel.find('.table'),
+        $rows = $table.find('tbody tr');
+        /* Dirtiest filter function ever ;) */
+        var $filteredRows = $rows.filter(function(){
+            var value = $(this).find('td').eq(column).text().toLowerCase();
+            return value.indexOf(inputContent) === -1;
+        });
+        /* Clean previous no-result if exist */
+        $table.find('tbody .no-result').remove();
+        /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+        $rows.show();
+        $filteredRows.hide();
+        /* Prepend no-result row if all rows are filtered */
+        if ($filteredRows.length === $rows.length) {
+            $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="'+ $table.find('.filters th').length +'">No result found</td></tr>'));
+        }
+    });
+  });
+</script>
+
+<!-- Chart -->
+<script type="text/javascript">
+  $(document).ready(function() {
+  var ctx = document.getElementById("myChart").getContext("2d");
+
+  var data = {
+    labels: datalabel1,
+    datasets: [{
+      label: "My First dataset",
+      fillColor: "rgba(220,220,220,0.4)",
+      strokeColor: "rgba(247, 235, 0,1)",
+      pointColor: "rgba(220,220,220,1)",
+      pointStrokeColor: "#fff",
+      pointHighlightFill: "#fff",
+      pointHighlightStroke: "rgba(220,220,220,1)",
+      data: objData1
+    }, {
+      label: "My Second dataset",
+      fillColor: "rgba(151,187,205,0.2)",
+      strokeColor: "rgba(255, 0, 30,1)",
+      pointColor: "rgba(151,187,205,1)",
+      pointStrokeColor: "#fff",
+      pointHighlightFill: "#fff",
+      pointHighlightStroke: "rgba(151,187,205,1)",
+      data: objData2
+    }]
+  };
+  var options = {
+    animation: false,
+    //Boolean - If we want to override with a hard coded scale
+    scaleOverride: false,
+    //** Required if scaleOverride is true **
+    //Number - The number of steps in a hard coded scale
+    scaleSteps: 1,
+    //Number - The value jump in the hard coded scale
+    scaleStepWidth: 1,
+    //Number - The scale starting value
+    scaleStartValue: 0,
+
+    legend: {
+            display: true,
+            labels: {
+                fontColor: 'rgb(255, 99, 132)'
+            }
+          },
+    title: {
+            display: true,
+            text: 'Custom Chart Title'
+        },
+    scales: {
+            yAxes: [{
+                ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 100
+                }
+            }]
+        }
+  };
+
+  var myLineChart = new Chart(ctx).Line(data, options);
+  setInterval(function() {
+    setData1(data.datasets[0].data);
+    setData2(data.datasets[1].data);
+    setLabels(data.labels);
+
+    var myLineChart = new Chart(ctx).Line(data, options);
+  }, 1000);
+
+  function setLabels(labels) {
+    next.setSeconds(next.getSeconds() + 1);
+    var nextMonthName = formatDate(next);
+    var strLb = nextMonthName.toString();
+    labels.push(strLb);
+    labels.shift();
+    //console.log(labels)
+  }
+
+  function setData1(data) {
+    data.push(level1.toFixed(2));
+    data.shift();
+  }
+
+  function setData2(data) {
+    //data.push(Math.floor(Math.random() * 1) + 20);
+    
+    //data.push(Math.random() * 2 + 20);
+    //nsole.log(data1.toFixed(2));
+    data.push(level2.toFixed(2));
+    data.shift();
+  }
+
+});
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#example').DataTable();
+  });
+</script>

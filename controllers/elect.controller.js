@@ -20,7 +20,6 @@ module.exports.station = function(req, res) {
 			res.render('elect/station', {
 				station: station,
 				cabinets: cabinets,
-
 			});
 		});
 	});

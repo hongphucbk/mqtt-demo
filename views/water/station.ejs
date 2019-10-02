@@ -1,0 +1,54 @@
+<% layout('../layout/index') %>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<div class="panel-heading">
+	Water Station:  <%= station.description %>
+	<span style="float: right;"><a href="/elect/add">Add new station</a></span>
+</div>
+<style type="text/css">
+	.display{
+		position: absolute;
+		/*font-size: 7;*/
+	}
+</style>
+<!--  -->
+<div class="panel-body">
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" style="position: relative;">
+		<img src="/img/a.jpg" style="width: 100%">
+
+		<% cabinets.forEach(function(cabinet) { %>		
+			<p class="display" style="top: calc(<%= cabinet.posy + 0%>%);left: calc(<%= cabinet.posx %>vw);" id="Uab">Uab  = 200 V</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 3%>%);left: calc(<%= cabinet.posx %>vw);" id="Ubc">Ubc  = 200 V</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 6%>%);left: calc(<%= cabinet.posx %>vw);" id="Uca">Uca  = 210 V</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 9%>%);left: calc(<%= cabinet.posx %>vw);" id="Iab">Iab  = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 12%>%);left: calc(<%= cabinet.posx %>vw);" id="Ibc">Ibc  = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 15%>%);left: calc(<%= cabinet.posx %>vw);" id="Ica">Iab  = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 18%>%);left: calc(<%= cabinet.posx %>vw);" id="F">F    = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 21%>%);left: calc(<%= cabinet.posx %>vw);" id="PF">PF   = 2.5 A</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 24%>%);left: calc(<%= cabinet.posx %>vw);" id="Kwhd">KWh  = 725 Kwh (Day)</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 27%>%);left: calc(<%= cabinet.posx %>vw);" id="Kwht">KWh  = 725 Kwh (Total</p>
+			<p class="display" style="top: calc(<%= cabinet.posy + 31%>%);left: calc(<%= cabinet.posx %>vw);" id="Kwht">
+				<a href="/elect/station/<%= station.id %>/cabinet/<%= cabinet.id %>"><label class="label label-info">Detail...</label>
+				</a>
+				<a href="/elect/station/<%= station.id %>/cabinet/<%= cabinet.id %>/chart"><label class="label label-info">Chart...</label>
+				</a>
+			</p>
+		<% }); %>
+	</div>
+	<div id="map"></div>
+
+		<!--  -->
+
+	  
+	</div>
+       
+    </div>
+</div>
+

@@ -33,7 +33,7 @@ module.exports.overview = async function(req, res) {
 		oldWaters2: oldWaters2,
 		moment: moment,
 		percentAlarm: percentAlarm,
-		percentAlarmAck: percentAlarmAck,
+		percentAlarmAck: percentAlarmAck, 
 	});
 };
 

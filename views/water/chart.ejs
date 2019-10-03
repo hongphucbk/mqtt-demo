@@ -1,0 +1,229 @@
+<% layout('../layout/index') %>
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<style>
+    .display_value{
+      style="font-size: 24px; text-align: center;"
+    }
+
+    .cl_blue{
+      color: blue;
+    }
+
+    body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+</style>
+
+<div class="panel-heading">
+	Chart
+	<span style="float: right;"><a href="/water/add">Add new station</a></span>
+</div>
+<div class="panel-body">
+<div class="container">
+	<div class="row">
+		<div id="chartdiv"></div>
+
+		
+	</div>
+       
+  
+
+  
+</div>
+
+
+
+
+
+<!-- Get init data -->
+<script type="text/javascript">
+	var objData1 = [];
+	var objData2 = [];
+	var datalabel1 = [];
+	let temp1 = "";
+	<% oldWaters1.forEach(function(water) { %>
+		var dataOld1 = <%= water.data %>
+		objData1.push(dataOld1);
+	  temp1 = "<%= moment(water.timestamp).format('HH:mm:ss') %>"
+    datalabel1.push(temp1)
+    
+  <% }); %>
+  <% oldWaters2.forEach(function(water) { %>
+		var dataOld2 = <%= water.data %>
+		objData2.push(dataOld2);
+  <% }); %>
+  datalabel1 = datalabel1.reverse();
+  var level1;
+  var level2;
+	level1 = objData1[0]; 
+	level2 = objData2[0];
+  objData1 = objData1.reverse();
+  objData2 = objData2.reverse();
+  // console.log('data1 = ' + typeof(data1))
+</script>
+
+<!-- Chart Date time  -->
+<script type="text/javascript">
+  var now = Date.now()
+  //console.log(now);
+  var next = new Date(now + (1000));
+  //console.log(next);
+
+  function formatDate(date) {
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    return hour + ':' + minute +  ':' +second;
+  }
+
+  function formatFullDateTime(date) {
+    var day = date.getDate();
+    var monthIndex = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    return day + "-" + monthIndex + "-"+ year + " " + hour + ':' + minute +  ':' +second;
+  }
+
+  function formatDateFull(date2){
+    
+    // let date1 = moment.utc().format();
+    // let date = moment.utc().local().format('DD-MM-YYYY HH:mm:ss');
+    // console.log('date ' + date)
+    // let date1 = new Date();
+    // moment.locale('vi');
+    // console.log('date ' + date1)
+
+    // var date = moment.utc().format();
+    // console.log(date, "- now in UTC"); 
+
+    // var local = moment.utc(date).local().format();
+    // console.log(local, "- UTC now to local"); 
+
+    var dt = new Date();
+    //dt.setHours( dt.getHours() + 7 );
+    //return local;
+    return moment(dt).format('DD-MM-YYYY HH:mm:ss');
+  }
+</script>
+      
+<!-- Socket IO -->
+<script type="text/javascript">
+  //let socket = io("http://localhost:3001");
+  let socket = io("http://124.158.10.133:3001");
+  socket.emit('thongbao','hello');
+  socket.on('level1', function(msg){
+    	// document.getElementById("Uab").innerHTML = msg.Uab ;
+    	// document.getElementById("Ubc").innerHTML = msg.Ubc ;
+    	// document.getElementById("Uca").innerHTML = msg.Uca ;
+    	// document.getElementById("Iab").innerHTML = msg.Iab ;
+    	// document.getElementById("Ibc").innerHTML = msg.Ibc ;
+    	// document.getElementById("Ica").innerHTML = msg.Ica ;
+    	// document.getElementById("Cosphi").innerHTML = msg.Cosphi ;
+    	// document.getElementById("Hz").innerHTML = msg.Hz ;
+    	// document.getElementById("Kwh_Day").innerHTML = msg.Kwh_Day ;
+    	// document.getElementById("Kwh_Total").innerHTML = msg.Kwh_Total ;
+    	// document.getElementById("Timestamp").innerHTML = formatDate(new Date());
+    	//console.log(msg);
+    	level1 = msg;
+    	//gauge1.set(msg);
+    	gauge1.update(msg);
+    	// document.getElementById("preview-textfield").innerHTML = msg.Uab + " V";
+      if (level1 < 20 || level1 > 80) {
+        addData("1", 'Bồn 1', level1);
+      }
+
+  });
+  socket.on('level2', function(msg){
+  		level2 = msg;
+    	gauge2.update(msg);
+      if (level2 < 20 || level2 > 80) {
+        addData("1", 'Bồn 2', level2);
+      }
+  });
+</script>
+
+<!-- Chart -->
+<script type="text/javascript">
+  /**
+ * ---------------------------------------
+ * This demo was created using amCharts 4.
+ * 
+ * For more information visit:
+ * https://www.amcharts.com/
+ * 
+ * Documentation is available at:
+ * https://www.amcharts.com/docs/v4/
+ * ---------------------------------------
+ */
+
+// Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+// Create chart instance
+var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+// Add data
+chart.data = generateChartData();
+
+// Create axes
+var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+dateAxis.renderer.minGridDistance = 50;
+
+var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+// Create series
+var series = chart.series.push(new am4charts.LineSeries());
+series.dataFields.valueY = "visits";
+series.dataFields.dateX = "date";
+series.strokeWidth = 2;
+series.minBulletDistance = 10;
+series.tooltipText = "{valueY}";
+series.tooltip.pointerOrientation = "vertical";
+series.tooltip.background.cornerRadius = 20;
+series.tooltip.background.fillOpacity = 0.5;
+series.tooltip.label.padding(12,12,12,12)
+
+// Add scrollbar
+chart.scrollbarX = new am4charts.XYChartScrollbar();
+chart.scrollbarX.series.push(series);
+
+// Add cursor
+chart.cursor = new am4charts.XYCursor();
+chart.cursor.xAxis = dateAxis;
+chart.cursor.snapToSeries = series;
+
+function generateChartData() {
+    var chartData = [];
+    var firstDate = new Date();
+    firstDate.setDate(firstDate.getDate() - 1000);
+    var visits = 1200;
+    for (var i = 0; i < 500; i++) {
+        // we create date objects here. In your data, you can have date strings
+        // and then set format of your dates using chart.dataDateFormat property,
+        // however when possible, use date objects, as this will speed up chart rendering.
+        var newDate = new Date(firstDate);
+        newDate.setDate(newDate.getDate() + i);
+        
+        visits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+
+        chartData.push({
+            date: newDate,
+            visits: visits
+        });
+    }
+    return chartData;
+}
+</script>

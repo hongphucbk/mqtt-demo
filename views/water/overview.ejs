@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css">
 <!-- Datatable -->
 <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="/css/process-water.css" rel="stylesheet">
 
 <style>
     .display_value{
@@ -15,6 +16,10 @@
 
     .cl_blue{
       color: blue;
+    }
+
+    table.dataTable tbody th, table.dataTable tbody td{
+      padding: 0px 0px !important;
     }
 </style>
 
@@ -49,7 +54,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-7">
       <table id="example" class="display" style="width:100%">
         <thead>
             <tr>
@@ -100,7 +105,30 @@
             </tr>
         </tfoot> -->
       </table>
-    </div>      
+    </div>    
+    <!-- <div class="col-md-1">
+    </div> -->
+    <div class="col-md-2" style="margin-top: 5%">
+      <p style="text-align: center;">ALARM</p>
+      <div class="progress-pie-chart" data-percent="<%= percentAlarm %>" style="margin-top: 0 !important"><!--Pie Chart -->
+        <div class="ppc-progress">
+            <div class="ppc-progress-fill"></div>
+        </div>
+        <div class="ppc-percents">
+          <div class="pcc-percents-wrapper">
+              <span>%</span>
+          </div>
+        </div>
+      </div><!--End Chart -->
+
+    </div>
+    <div class="col-md-3" style="margin-top: 5%"> 
+      <p style="text-align: center;">INSTRUCTION</p>
+      <span class="label label-danger">Hight</span> Mức nước > 80 <br>
+                  
+      <span class="label label-warning">Low</span> Mức nước < 20
+
+    </div>
   </div>
 </div>
 
@@ -141,7 +169,7 @@
   var counter = 1
   $(document).ready(function() {
     t = $('#example').DataTable();
-    
+    t.order( [ 0, 'desc' ] ).draw();
   });
 
   function addData(station, name, value){
@@ -233,7 +261,7 @@
     // console.log(local, "- UTC now to local"); 
 
     var dt = new Date();
-    dt.setHours( dt.getHours() + 7 );
+    //dt.setHours( dt.getHours() + 7 );
     //return local;
     return moment(dt).format('DD-MM-YYYY HH:mm:ss');
   }
@@ -241,7 +269,8 @@
       
 <!-- Socket IO -->
 <script type="text/javascript">
-  let socket = io("http://localhost:3001");
+  //let socket = io("http://localhost:3001");
+  let socket = io("http://124.158.10.133:3001");
   socket.emit('thongbao','hello');
   socket.on('level1', function(msg){
     	// document.getElementById("Uab").innerHTML = msg.Uab ;
@@ -268,6 +297,9 @@
   socket.on('level2', function(msg){
   		level2 = msg;
     	gauge2.update(msg);
+      if (level2 < 20 || level2 > 80) {
+        addData("1", 'Bồn 2', level2);
+      }
   });
 </script>
 
@@ -365,9 +397,20 @@
 });
 </script>
 
-<!-- <script type="text/javascript">
-  $(document).ready(function() {
-    $('#example').DataTable();
+<!-- process pie -->
+<script type="text/javascript">
+  $(function(){
+      var $ppc = $('.progress-pie-chart'),
+        percent = parseInt($ppc.data('percent')),
+        deg = 360*percent/100;
+      if (percent > 50) {
+        $ppc.addClass('gt-50');
+      }
+      $('.ppc-progress-fill').css('transform','rotate('+ deg +'deg)');
+      $('.ppc-percents span').html(percent+'%');
   });
-</script> -->
+
+  
+   
+</script>
 

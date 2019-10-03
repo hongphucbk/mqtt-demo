@@ -17,15 +17,23 @@ module.exports.overview = async function(req, res) {
 	// 	});
 	// });
 	let stations = await Station.find();
-	let waters = await Water.find({ $or: [ {data: { $gte: 80 }}, {data: { $lte: 20}} ] } ).sort('-timestamp').limit(10);
+	let waters = await Water.find({ $or: [ {data: { $gte: 80 }}, {data: { $lte: 20}} ] } ).sort('-timestamp').limit(100);
 	let oldWaters1 = await Water.find({name: "1"}).sort('-timestamp').limit(30);
 	let oldWaters2 = await Water.find({name: "2"}).sort('-timestamp').limit(30);
+	let totalAlarm = await Water.countDocuments({ $or: [ {data: { $gte: 80 }}, {data: { $lte: 20}} ] });
+	let totalRecord  = await Water.countDocuments({});
+	let totalAlarmAck = await Water.countDocuments({acknowleadge: 1});
+
+	let percentAlarm = totalAlarm *100 / totalRecord;
+	let percentAlarmAck = totalAlarmAck*100 / totalAlarm;
 	res.render('water/overview', {
 		stations: stations,
 		waters: waters,
 		oldWaters1: oldWaters1,
 		oldWaters2: oldWaters2,
 		moment: moment,
+		percentAlarm: percentAlarm,
+		percentAlarmAck: percentAlarmAck,
 	});
 };
 
@@ -67,10 +75,8 @@ module.exports.acknowleadge = async function(req, res) {
 	});
 };
 
-
-
 module.exports.listExcel = async function(req, res) {
-	let waters = await Water.find().sort('-timestamp').limit(1000);
+	let waters = await Water.find().sort('-timestamp').limit(2000);
 	let data = []
 	let temp1;
 	waters.forEach(function(water) {
@@ -212,53 +218,16 @@ module.exports.listExcel = async function(req, res) {
 	// OR you can save this buffer to the disk by creating a file.
 };
 
-module.exports.listControl = function(req, res) {
-	res.render('elect/control', {
-			elects: null
-		});
+module.exports.chart = async function(req, res) {
+	let stations = await Station.find();
+	let waters = await Water.find({ $or: [ {data: { $gte: 80 }}, {data: { $lte: 20}} ] } ).sort('-timestamp').limit(30);
+	let oldWaters1 = await Water.find({name: "1"}).sort('-timestamp').limit(30);
+	let oldWaters2 = await Water.find({name: "2"}).sort('-timestamp').limit(30);
+	res.render('water/chart', {
+		stations: stations,
+		waters: waters,
+		oldWaters1: oldWaters1,
+		oldWaters2: oldWaters2,
+		moment: moment,
+	});
 };
-
-// module.exports.postAdd = function(req, res) {
-// 	console.log(req.body);
-// 	// or, for inserting large batches of documents
-// 	Station.insertMany(req.body, function(err) {
-// 		if (err) return handleError(err);
-// 	});
-// 	res.redirect('/station');
-// };
-
-// module.exports.getEdit = function(req, res) {
-// 	var id = req.params.id;
-// 	Station.findById(id).then(function(station){
-// 		res.render('stations/edit', {
-// 			station: station
-// 		});
-// 	});
-// };
-
-// module.exports.postEdit = function(req, res) {
-// 	var query = {"_id": req.params.id};
-// 	var data = {
-// 		"name" : req.body.name,
-// 	    "description" : req.body.description,
-// 	    "address" : req.body.address,
-// 	    "information" : req.body.information,
-// 	    "note" : req.body.note
-// 	}
-
-// 	console.log(query)
-// 	Station.findOneAndUpdate(query, data, {'upsert':true}, function(err, doc){
-// 	    if (err) return res.send(500, { error: err });
-// 	    res.redirect('/station');
-// 	});
-
-// };
-
-// module.exports.getDelete = function(req, res) {
-// 	var id = req.params.id;
-// 	Station.findByIdAndDelete(id, function(err, doc){
-// 	    if (err) return res.send(500, { error: err });
-// 	    res.redirect('/station');
-// 	});
-
-// };

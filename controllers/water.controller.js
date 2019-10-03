@@ -79,8 +79,17 @@ module.exports.listExcel = async function(req, res) {
 	let waters = await Water.find().sort('-timestamp').limit(2000);
 	let data = []
 	let temp1;
+	let temp2;
 	waters.forEach(function(water) {
-		temp1 = {station: 1, name: water.name, value: water.data, time: water.timestamp }  // moment().format('MMMM Do YYYY, h:mm:ss a');
+		temp2 = "";
+		if (water.data > 80) {
+			temp2 = "Hight"
+		}
+		if (water.data < 20) {
+			temp2 = "Low"
+		}
+
+		temp1 = {station: 1, name: water.name, value: water.data, alarm: temp2, time: water.timestamp }  // moment().format('MMMM Do YYYY, h:mm:ss a');
 		data.push(temp1)
 	})
 	// You can define styles as json object
@@ -128,6 +137,27 @@ module.exports.listExcel = async function(req, res) {
 	        rgb: 'FF00FF00'
 	      }
 	    }
+	  },
+	  cellRed: {
+	    fill: {
+	      fgColor: {
+	        rgb: 'f5938c'
+	      }
+	    }
+	  },
+	  cellYellow: {
+	    fill: {
+	      fgColor: {
+	        rgb: 'eff59d'
+	      }
+	    }
+	  },
+	  cellWhite: {
+	    fill: {
+	      fgColor: {
+	        rgb: 'ffffff'
+	      }
+	    }
 	  }
 	};
 	 
@@ -146,7 +176,7 @@ module.exports.listExcel = async function(req, res) {
 	    displayName: 'TRẠM', // <- Here you specify the column header
 	    headerStyle: styles.headerDark, // <- Header style
 	    
-	    width: 120 // <- width in pixels
+	    width: 40 // <- width in pixels
 	  },
 	  name: {
 	    displayName: 'TÊN BỒN',
@@ -154,16 +184,34 @@ module.exports.listExcel = async function(req, res) {
 	    // cellFormat: function(value, row) { // <- Renderer function, you can access also any row.property
 	    //   return (value == 1) ? 'Active' : 'Inactive';
 	    // },
-	    width: '10' // <- width in chars (when the number is passed as string)
+	    width: 50 // <- width in chars (when the number is passed as string)
 	  },
 	  value: {
 	    displayName: 'GIÁ TRỊ',
 	    headerStyle: styles.headerDark,
 	    //cellStyle: styles.cellPink, // <- Cell style
+	    // cellStyle: function(value, row) { // <- style renderer function
+	    //   // if the status is 1 then color in green else color in red
+	    //   // Notice how we use another cell value to style the current one
+	    //   return (row.value <= 80 & row.value >= 20) ? styles.cellGreen : {fill: {fgColor: {rgb: 'FFFF0000'}}}; // <- Inline cell style is possible 
+	    // },
+	    width: 100 // <- width in pixels
+	  },
+	  alarm: {
+	    displayName: 'CẢNH BÁO',
+	    headerStyle: styles.headerDark,
+	    //cellStyle: styles.cellPink, // <- Cell style
 	    cellStyle: function(value, row) { // <- style renderer function
 	      // if the status is 1 then color in green else color in red
 	      // Notice how we use another cell value to style the current one
-	      return (row.value <= 80 & row.value >= 20) ? styles.cellGreen : {fill: {fgColor: {rgb: 'FFFF0000'}}}; // <- Inline cell style is possible 
+	      if (row.value > 80) {
+	      	return styles.cellRed
+	      }
+	      if (row.value < 20) {
+	      	return styles.cellYellow
+	      }
+	      return styles.cellWhite
+
 	    },
 	    width: 100 // <- width in pixels
 	  },
@@ -192,7 +240,7 @@ module.exports.listExcel = async function(req, res) {
 	// The merges are independent of the data.
 	// A merge will overwrite all data _not_ in the top-left cell.
 	const merges = [
-	  { start: { row: 1, column: 1 }, end: { row: 1, column: 4 } },
+	  { start: { row: 1, column: 1 }, end: { row: 1, column: 5 } },
 	  // { start: { row: 2, column: 1 }, end: { row: 2, column: 5 } },
 	  // { start: { row: 2, column: 6 }, end: { row: 2, column: 10 } }
 	]

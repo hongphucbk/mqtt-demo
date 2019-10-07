@@ -1,7 +1,5 @@
 <% layout('../layout/index') %>
-<script src="https://www.amcharts.com/lib/4/core.js"></script>
-<script src="https://www.amcharts.com/lib/4/charts.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
 <style>
   .display_value{
     style="font-size: 24px; text-align: center;"
@@ -13,10 +11,7 @@
 
   body {}
 
-  #chartdiv {
-    width: 100%;
-    height: 500px;
-  }
+  
 </style>
 
 <div class="panel-heading">
@@ -26,10 +21,12 @@
 <div class="panel-body">
 <div class="container">
 	<div class="row">
-		<div id="chartdiv"></div>
-
+		<div id="chart">
+      <apexchart type=area height=350 :options="chartOptions" :series="series" />
+    </div>
 	</div>
 </div>
+
 
 <!-- Get init data -->
 <script type="text/javascript">
@@ -143,76 +140,126 @@
   });
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
+
+
+
+
 <!-- Chart -->
 <script type="text/javascript">
-  /**
- * ---------------------------------------
- * This demo was created using amCharts 4.
- * 
- * For more information visit:
- * https://www.amcharts.com/
- * 
- * Documentation is available at:
- * https://www.amcharts.com/docs/v4/
- * ---------------------------------------
- */
+  var options = {
+  annotations: {
+    yaxis: [
+      {
+        y: 8200,
+        borderColor: "#00E396",
+        label: {
+          borderColor: "#00E396",
+          style: {
+            color: "#fff",
+            background: "#00E396"
+          },
+          text: "Y Axis Annotation"
+        }
+      }
+    ],
+    xaxis: [
+      {
+        // in a datetime series, the x value should be a timestamp, just like it is generated below
+        x: new Date("11/17/2017").getTime(),
+        strokeDashArray: 0,
+        borderColor: "#775DD0",
+        label: {
+          borderColor: "#775DD0",
+          style: {
+            color: "#fff",
+            background: "#775DD0"
+          },
+          text: "X Axis Anno Vertical"
+        }
+      },
+      {
+        x: new Date("03 Dec 2017").getTime(),
+        borderColor: "#FEB019",
+        label: {
+          borderColor: "#FEB019",
+          style: {
+            color: "#fff",
+            background: "#FEB019"
+          },
+          orientation: "horizontal",
+          text: "X Axis Anno Horizonal"
+        }
+      }
+    ],
+    points: [
+      {
+        x: new Date("27 Nov 2017").getTime(),
+        y: 8500.9,
+        marker: {
+          size: 6,
+          fillColor: "#fff",
+          strokeColor: "#2698FF",
+          radius: 2
+        },
+        label: {
+          borderColor: "#FF4560",
+          offsetY: 0,
+          style: {
+            color: "#fff",
+            background: "#FF4560"
+          },
 
-// Themes begin
-am4core.useTheme(am4themes_animated);
-// Themes end
-
-// Create chart instance
-var chart = am4core.create("chartdiv", am4charts.XYChart);
-
-// Add data
-chart.data = generateChartData();
-
-// Create axes
-var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-dateAxis.renderer.minGridDistance = 50;
-
-var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
-// Create series
-var series = chart.series.push(new am4charts.LineSeries());
-series.dataFields.valueY = "visits";
-series.dataFields.dateX = "date";
-series.strokeWidth = 2;
-series.minBulletDistance = 10;
-series.tooltipText = "{valueY}";
-series.tooltip.pointerOrientation = "vertical";
-series.tooltip.background.cornerRadius = 20;
-series.tooltip.background.fillOpacity = 0.5;
-series.tooltip.label.padding(12,12,12,12)
-
-// Add scrollbar
-chart.scrollbarX = new am4charts.XYChartScrollbar();
-chart.scrollbarX.series.push(series);
-
-// Add cursor
-chart.cursor = new am4charts.XYCursor();
-chart.cursor.xAxis = dateAxis;
-chart.cursor.snapToSeries = series;
-
-function generateChartData() {
-    var chartData = [];
-    var firstDate = new Date();
-    firstDate.setDate(firstDate.getDate() - 1000);
-    var visits = 1200;
-    for (var i = 0; i < 500; i++) {
-        // we create date objects here. In your data, you can have date strings
-        // and then set format of your dates using chart.dataDateFormat property,
-        // however when possible, use date objects, as this will speed up chart rendering.
-        var newDate = new Date(firstDate);
-        newDate.setDate(newDate.getDate() + i);
-        
-        visits += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
-
-        chartData.push({
-            date: newDate,
-            visits: visits
-        });
+          text: "Point Annotation (XY)"
+        }
+      }
+    ]
+  },
+  chart: {
+    height: 380,
+    type: "line",
+    id: "areachart-2"
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    curve: "straight"
+  },
+  series: [
+    {
+      data: series.monthDataSeries1.prices
     }
-    return chartData;
-}
+  ],
+  title: {
+    text: "Line with Annotations",
+    align: "left"
+  },
+  labels: series.monthDataSeries1.dates,
+  xaxis: {
+    type: "datetime"
+  }
+};
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+
+// example of series in another format
+// chart.updateSeries([{
+//   data: [{
+//     x: "02-02-2002",
+//     y: 44
+//   }, {
+//     x: "12-02-2002",
+//     y: 51
+//   }]
+// }])
+
+
+
 </script>

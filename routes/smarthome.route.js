@@ -3,7 +3,7 @@ var router = express.Router();
 
 // router.use(express.static(__dirname + './public'));
 
-var controller = require('../controllers/water.controller');
+var controller = require('../controllers/smarthome.controller');
 var validate = require('../validate/station.validate');
 
 router.get('/', controller.overview);

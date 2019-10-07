@@ -26,7 +26,7 @@ module.exports.overview = async function(req, res) {
 
 	let percentAlarm = totalAlarm *100 / totalRecord;
 	let percentAlarmAck = totalAlarmAck*100 / totalAlarm;
-	res.render('water/overview', {
+	res.render('smarthome/home', {
 		stations: stations,
 		waters: waters,
 		oldWaters1: oldWaters1,

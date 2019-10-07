@@ -30,6 +30,7 @@ var overviewRouter = require('./routes/overview.route');
 var electRouter = require('./routes/elect.route');
 
 var waterRouter = require('./routes/water.route');
+var smarthomeRouter = require('./routes/smarthome.route');
 
 //-------------------------------------------------------------------
 
@@ -54,6 +55,7 @@ app.use('/overview', overviewRouter);
 app.use('/elect', electRouter);
 
 app.use('/water', waterRouter);
+app.use('/smarthome', smarthomeRouter);
 //-------------------------------------------------------------------
 app.listen(port, function(){
 	console.log(`Server listening on port ${port}!`)
@@ -75,8 +77,31 @@ var settings = {
 var server = new mosca.Server(settings);
 
 server.on('clientConnected', function(client) {
-   console.log('Mosca client connected ', client.id);
+   console.log('MQTT Mosca client connected ', client.id);
+   var message = {
+	  topic: 'status/sonoff/connect',
+	  payload: '1', // or a Buffer
+	  qos: 0, // 0, 1, or 2
+	  retain: false // or true
+	};
+
+	server.publish(message);
 });
+
+server.on('clientDisconnected', function(client) {
+	console.log('MQTT Client Disconnected:', client.id);
+	var message = {
+	  topic: 'status/sonoff/connect',
+	  payload: '0', // or a Buffer
+	  qos: 0, // 0, 1, or 2
+	  retain: false // or true
+	};
+
+	server.publish(message);
+
+});
+
+
 server.on('ready', function(){
 	console.log("Server Mosca MQTT ready for PLC " + settings.port + ", for web port " + settings.http.port);
 });
@@ -163,12 +188,32 @@ server.on('published',function getdata(packet,client) {
 		console.log("Đèn phòng khách đang: " + data)
 	}
 
+	//SON OFF
 	if(packet.topic =='stat/sonoff/POWER') 
 	{
-		// console.log('data: ', packet.topic);
-		var data = packet.payload.toString();
-		console.log("Đèn phòng khách đang: " + data)
+
+		//console.log('data: ', packet.topic);
+		let data = packet.payload.toString();
+		console.log("Data nhận được: " + data)
 	}
+
+	if(packet.topic =='stat/sonoff/RESULT') 
+	{
+		//console.log('data: ', packet.topic);
+		//var data1 = packet.payload.toString();
+		//console.log("Result: " + data1)
+		var message = {
+		  topic: 'status/sonoff/connect',
+		  payload: '1', // or a Buffer
+		  qos: 0, // 0, 1, or 2
+		  retain: false // or true
+		};
+
+		server.publish(message);
+		
+	}
+
+
 
 	if(packet.topic =='PLC/Data') 
 	{
@@ -226,6 +271,6 @@ http.listen(3001, function(){
 
 io.on('connection', function(socket){
   console.log('Socket IO: a user connected');
-  io.emit('data', "hihi");
+  //io.emit('data', "hihi");
 });
 

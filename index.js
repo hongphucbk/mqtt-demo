@@ -259,6 +259,20 @@ server.on('published',function getdata(packet,client) {
 		io.emit('level2', data_json.Level1.toFixed(2));
 	}
 
+
+	//From Factory
+	if(packet.topic =='Esquel/EAV/WH/Data') 
+	{
+		// console.log('data: ', packet.topic);
+		let data = packet.payload.toString();
+		//console.log("Dữ liệu nhận được: " + data)
+		let data_json = JSON.parse(data)
+		console.log("Data nhan duoc la: " + data )
+
+		
+	}
+
+	
 	
 });
 

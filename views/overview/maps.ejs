@@ -11,7 +11,8 @@
 
 		<% stations.forEach(function(station) { %>
 				<div id="content<%= station.maps_id %>">
-			      Station <%= station.description %><br>
+			      Station: <%= station.description %><br>
+			      Address: <%= station.address %><br>
 			      Nhiệt độ <span id="temp<%= station.maps_id %>"></span> <br>
 			      Độ ẩm <span id="humi<%= station.maps_id %>"></span>
 			    </div>
@@ -152,11 +153,18 @@
   		let data = JSON.parse(payload);
   		var Tj = data.Tj;
   		var Hj = data.Hj;
+  		var Tg = data.Tg;
+  		var Hg = data.Hg;
+  		var TA = data.TA;
+  		var HA = data.HA;
 	    	// document.getElementById("info-1").innerHTML = 'Connected. Wifi: ' +  data.Wifi.SSId;
-	    <% stations.forEach(function(station) { %>
-	      document.getElementById('temp<%= station.maps_id %>').innerHTML = Tj;
-	      document.getElementById('humi<%= station.maps_id %>').innerHTML = Hj;
-			<% }); %>
+	  
+	    document.getElementById('temp1').innerHTML = Tj;
+	    document.getElementById('humi1').innerHTML = Hj;
+	    document.getElementById('temp2').innerHTML = Tg;
+	    document.getElementById('humi2').innerHTML = Hg;
+	    document.getElementById('temp3').innerHTML = TA;
+	    document.getElementById('humi3').innerHTML = HA;
 
 	    }else{
 	    	

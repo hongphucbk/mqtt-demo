@@ -169,7 +169,7 @@ server.on('published',function getdata(packet,client) {
 
 	if(packet.topic =='topic1/write') 
 	{
-		// console.log('data: ', packet.topic);
+	  	// console.log('data: ', packet.topic);
 		var data = packet.payload.toString();
 		console.log("Đèn phòng khách đang: " + data)
 	}
@@ -191,25 +191,57 @@ server.on('published',function getdata(packet,client) {
 	//SON OFF
 	if(packet.topic =='stat/sonoff/POWER') 
 	{
-
-		//console.log('data: ', packet.topic);
 		let data = packet.payload.toString();
 		console.log("Data nhận được: " + data)
-	}
 
-	if(packet.topic =='stat/sonoff/RESULT') 
-	{
-		//console.log('data: ', packet.topic);
-		//var data1 = packet.payload.toString();
-		//console.log("Result: " + data1)
 		var message = {
-		  topic: 'status/sonoff/connect',
-		  payload: '1', // or a Buffer
+		  topic: 'plc/POWER',
+		  payload: data, // or a Buffer
 		  qos: 0, // 0, 1, or 2
 		  retain: false // or true
 		};
-
 		server.publish(message);
+	}
+
+	var count = 1;
+	if(packet.topic =='stat/sonoff/RESULT') 
+	{
+		var message = {
+			  topic: 'status/sonoff/connect',
+			  payload: '1', // or a Buffer
+			  qos: 0, // 0, 1, or 2
+			  retain: false // or true
+			};
+		server.publish(message);
+
+		//console.log('data: ', packet.topic);
+		var data1 = packet.payload.toString();
+		//console.log("Data 1: " + data1)
+		try {
+			let json_data = JSON.parse(data1)
+			let sts = json_data.POWER;
+			//console.log("Result: " + sts) 
+			
+		
+			count = count + 1;
+			if (count > 5) {
+				count = 1
+				
+				let stsMessage = {
+				  topic: 'plc/POWER',
+				  payload: sts, // or a Buffer
+				  qos: 0, // 0, 1, or 2
+				  retain: false // or true
+				};
+				server.publish(stsMessage);
+			}
+ 		}
+		catch(err) {
+			console.log("Err is " + err);
+		}
+
+		
+		
 		
 	}
 
@@ -261,13 +293,20 @@ server.on('published',function getdata(packet,client) {
 
 
 	//From Factory
+	var count_factory = 0;
 	if(packet.topic =='Esquel/EAV/WH/Data') 
 	{
-		// console.log('data: ', packet.topic);
-		let data = packet.payload.toString();
-		//console.log("Dữ liệu nhận được: " + data)
-		let data_json = JSON.parse(data)
-		console.log("Data nhan duoc la: " + data )
+		if (count_factory > 20) {
+			// console.log('data: ', packet.topic);
+			let data = packet.payload.toString();
+			//console.log("Dữ liệu nhận được: " + data)
+			let data_json = JSON.parse(data)
+			console.log("Data nhan duoc la: " + data )
+			count_factory = 0;
+		}else{
+			count_factory = count_factory + 1;
+
+		}	
 
 		
 	}

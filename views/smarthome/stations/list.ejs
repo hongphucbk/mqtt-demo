@@ -1,0 +1,56 @@
+<% layout('../layout/index') %>
+
+<div class="panel-heading">
+	Station
+	<span style="float: right;"><a href="/station/add">Add new station</a></span>
+</div>
+<div class="panel-body">
+	<table class="table table-sm">
+	  <thead>
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">Name</th>
+	      <th scope="col">Description</th>
+	      <th scope="col">Addr</th>
+	      <th scope="col">Maps id</th>
+	      <th scope="col">Pos x</th>
+	      <th scope="col">Pos y</th>
+	      <th scope="col">Infos</th>
+	      <th scope="col">Note</th>
+	      <th scope="col">Action</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <script type="text/javascript">
+	    	var i = 1;
+	    </script>
+	    <% stations.forEach(function(station) { %>
+	    	<tr>
+		    	<td>
+		    		<script type="text/javascript">
+				    	document.write(i);
+				    	i = i + 1;
+				    </script>
+				</td>
+				<td> <%= station.name %> </td>
+				<td> <%= station.description %> </td>
+				<td> <%= station.address %> </td>
+				<td> <%= station.maps_id %> </td>
+				<td> <%= station.posx %> </td>
+				<td> <%= station.posy %> </td>
+
+				<td> <%= station.information %> </td>
+				<td> <%= station.note %> </td>
+				<td class="text-center">
+					<a class='btn btn-info btn-xs' href="/station/edit/<%= station.id %>">
+						<span class="glyphicon glyphicon-edit"></span>Edit</a>
+					<a href="/station/delete/<%= station.id %>" class="btn btn-danger btn-xs">
+						<span class="glyphicon glyphicon-remove"></span> Del</a>
+				</td>
+			</tr>	
+	    <% }); %>
+
+	  </tbody>
+	</table>
+</div>
+

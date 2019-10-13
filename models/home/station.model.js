@@ -10,6 +10,6 @@ var homeStationSchema = new mongoose.Schema({
 	posy: Number,
 });
 
-var HomeStation = mongoose.model('HomeStation', homeStationSchema, 'homestations');
+var HomeStation = mongoose.model('HomeStation', homeStationSchema, 'homestation');
 
 module.exports = HomeStation;

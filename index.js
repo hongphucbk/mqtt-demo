@@ -32,6 +32,8 @@ var electRouter = require('./routes/elect.route');
 var waterRouter = require('./routes/water.route');
 var smarthomeRouter = require('./routes/smarthome.route');
 
+var homeStationRouter = require('./routes/home/station.route');
+
 //-------------------------------------------------------------------
 
 var mongoose = require('mongoose');
@@ -56,6 +58,10 @@ app.use('/elect', electRouter);
 
 app.use('/water', waterRouter);
 app.use('/smarthome', smarthomeRouter);
+
+app.use('/home/station', homeStationRouter);
+
+
 //-------------------------------------------------------------------
 app.listen(port, function(){
 	console.log(`Server listening on port ${port}!`)
@@ -238,14 +244,8 @@ server.on('published',function getdata(packet,client) {
  		}
 		catch(err) {
 			console.log("Err is " + err);
-		}
-
-		
-		
-		
+		}		
 	}
-
-
 
 	if(packet.topic =='PLC/Data') 
 	{
@@ -291,7 +291,6 @@ server.on('published',function getdata(packet,client) {
 		io.emit('level2', data_json.Level1.toFixed(2));
 	}
 
-
 	//From Factory
 	var count_factory = 0;
 	if(packet.topic =='Esquel/EAV/WH/Data') 
@@ -305,22 +304,13 @@ server.on('published',function getdata(packet,client) {
 			count_factory = 0;
 		}else{
 			count_factory = count_factory + 1;
-
 		}	
-
-		
 	}
-
-	
-	
 });
-
 //-------------------------------------------------------------------
-
 http.listen(3001, function(){
   console.log('Socket IO: listening on *:3001');
 });
-
 
 io.on('connection', function(socket){
   console.log('Socket IO: a user connected');

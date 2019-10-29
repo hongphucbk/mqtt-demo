@@ -259,6 +259,17 @@ server.on('published',function getdata(packet,client) {
 		io.emit('data', data_json.TEST1);
 	}
 
+	if(packet.topic =='PLC\Data') 
+	{
+		// console.log('data: ', packet.topic);
+		let data = packet.payload.toString();
+		console.log("Data PLC\\DATA nhan duoc la: " + data)
+		console.log("Data nhan duoc la: " + JSON.parse(data))
+		var data_json = JSON.parse(data)
+		console.log("Data nhan duoc la: " + data_json.TEST1 )
+		io.emit('data', data_json.TEST1);
+	}
+
 	if(packet.topic =='Water/Level') 
 	{
 		// console.log('data: ', packet.topic);
@@ -306,6 +317,17 @@ server.on('published',function getdata(packet,client) {
 			count_factory = count_factory + 1;
 		}	
 	}
+
+	if(packet.topic =='HMI1/Data') 
+	{
+		let data = packet.payload.toString();
+		let data_json = JSON.parse(data)
+		console.log("Data nhan duoc la: " + data )
+	}
+	
+
+
+
 });
 //-------------------------------------------------------------------
 http.listen(3001, function(){
@@ -315,5 +337,52 @@ http.listen(3001, function(){
 io.on('connection', function(socket){
   console.log('Socket IO: a user connected');
   //io.emit('data', "hihi");
+  socket.on('', function(msg){
+    io.emit('chat message', msg);
+  });
+
 });
+
+//Send Line
+
+console.log('send to line');
+const { LineClient } = require('messaging-api-line');
+ 
+// get accessToken and channelSecret from LINE developers website
+const client = LineClient.connect({
+  accessToken: "KS76ZMVn8c/LGwp4jUMOqNp12mZw7wLLIzPztLhsjxLXhph1QbmI4VLKQSkTE6afKLOgu7pbWKpHp9sQkVgEtOUFoH4IN1YfnlEVPS4RF9SIRM9SbjKTt89XChV649boHpAu+tXEzJQ4xwolq/qh4wdB04t89/1O/w1cDnyilFU=",
+  channelSecret: "6feeb85b1ba0eb319f9164127c1a72a6", 
+});
+
+// client.push('U249f46e8fbf5ab6373235660a0281a19', [
+//   {
+//     type: 'text',
+//     text: 'Hello! Phuc 2',
+//   },
+// ]);
+
+//client.pushText('U249f46e8fbf5ab6373235660a0281a19', 'Chào Phúc! Chỉ số điện cao quá đã đạt mức 100 000 VNĐ');
+
+
+
+
+
+// // Viber
+// const { ViberClient } = require('messaging-api-viber');
+ 
+// // get authToken from the "edit info" screen of your Public Account.
+// const client = ViberClient.connect('4a83994963e7d159-e14675f14e21f269-9d22c4fb82864ef');
+// client.sendText(USER_ID, 'Hello Phuc');
+
+
+// create a tcp modbus client
+// const Modbus = require('jsmodbus')
+// const net = require('net')
+// const socket = new net.Socket()
+// const client = new Modbus.client.TCP(socket, unitId)
+// const options = {
+// 'host' : '171.246.134.174',
+// 'port' : 502
+// }
+
 

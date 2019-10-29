@@ -8,6 +8,8 @@ var validate = require('../validate/station.validate');
 
 router.get('/', controller.overview);
 router.get('/history', controller.history);
+router.get('/history1', controller.history1);
+router.get('/history2', controller.history2);
 
 router.get('/acknowleadge/:id', controller.acknowleadge);
 

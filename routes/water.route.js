@@ -11,6 +11,9 @@ router.get('/history', controller.history);
 router.get('/history1', controller.history1);
 router.get('/history2', controller.history2);
 
+router.get('/history3/:page', controller.history3);
+router.get('/history3', controller.history3);
+
 router.get('/acknowleadge/:id', controller.acknowleadge);
 
 router.get('/excel', controller.listExcel);

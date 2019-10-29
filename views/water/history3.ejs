@@ -1,0 +1,172 @@
+<% layout('../layout/index') %>
+
+<style>
+    .display_value{
+      style="font-size: 24px; text-align: center;"
+    }
+
+    .cl_blue{
+      color: blue;
+    }
+
+</style>
+
+<link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/v4.0.0/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!--   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+ -->
+<div class="panel-heading">
+  Historical Data
+	<span style="float: right;"><a href="/water/excel">Excel</a></span>
+</div>
+<div class="panel-body">
+  <div class="form-horizontal">
+    <div class="row">
+      <div class="col-md-4">
+          <div class="form-group">
+              <div class="col-md-4 control-label">
+                  <label for="startdate" class="control-label">StartDate</label>
+              </div>
+              <div class="col-md-8">
+                  <div class="input-group date" id="startdate">
+                      <input type="text" class="form-control" />
+                      <span class="input-group-addon">
+                          <span class="glyphicon-calendar glyphicon"></span>
+                      </span>
+                  </div>
+              </div>
+          </div>
+      </div>
+    
+      <div class="col-md-4">
+        <div class="form-group">
+          <div class="col-md-4 control-label">
+              <label for="enddate">EndDate</label>
+          </div>
+          <div class="col-md-8">
+            <div class="input-group date" id="enddate">
+              <input type="text" class="form-control" />
+              <span class="input-group-addon">
+                  <span class="glyphicon-calendar glyphicon"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="row">
+    <div class="col-md-12">
+      <table id="example" class="table display" style="width:80%">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Name</th>
+            <th>Value</th>
+            <th>Alarm</th>
+            <!-- <th>Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <% waters.forEach(function(water) { %>
+          <tr>
+            <td><%= moment(water.timestamp).format('DD-MMM-YYYY HH:mm:ss') %></td>
+                <td>Bồn <%= water.name %></td>
+            <td><%= water.data.toFixed(2) %></td>
+            <td><%= water.name %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+        <!-- <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot> -->
+      </table>
+      <% if (pages > 0) { %>
+                <ul class="pagination text-center">
+                    <% if (current == 1) { %>
+                        <li class="disabled"><a>First</a></li>
+                    <% } else { %>
+                        <li><a href="/water/history3?page=1">First</a></li>
+                    <% } %>
+                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                    <% if (i !== 1) { %>
+                        <li class="disabled"><a>...</a></li>
+                    <% } %>
+                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                        <% if (i == current) { %>
+                            <li class="active"><a><%= i %></a></li>
+                        <% } else { %>
+                            <li><a href="/water/history3?page=<%= i %>"><%= i %></a></li>
+                        <% } %>
+                        <% if (i == Number(current) + 4 && i < pages) { %>
+                            <li class="disabled"><a>...</a></li>
+                        <% } %>
+                    <% } %>
+                    <% if (current == pages) { %>
+                        <li class="disabled"><a>Last</a></li>
+                    <% } else { %>
+                        <li><a href="/water/history3?page=<%= pages %>">Last</a></li>
+                    <% } %>
+                </ul>
+            <% } %>
+    </div>      
+  </div>
+  
+</div>
+
+<script type="text/javascript">
+	var now = new Date();
+  var socket = io("http://localhost:3001");
+  socket.emit('thongbao','hello');
+  socket.on('data', function(msg){
+    	// document.getElementById("Uab").innerHTML = msg.Uab ;
+  });
+</script>
+  
+<!-- DateTimePicker -->
+<script type="text/javascript">
+  // var div_id = "<- cabinet.div_id %>"  
+   $(function () {
+           
+            $('#startdate,#enddate').datetimepicker({
+                useCurrent: false,
+                format: 'DD-MMM-YYYY',
+                minDate: moment()
+            });
+            $('#startdate').datetimepicker().on('dp.change', function (e) {
+                var incrementDay = moment(new Date(e.date));
+                incrementDay.add(-1, 'days');
+                $('#enddate').data('DateTimePicker').minDate(incrementDay);
+                $(this).data("DateTimePicker").hide();
+            });
+
+            $('#enddate').datetimepicker().on('dp.change', function (e) {
+                var decrementDay = moment(new Date(e.date));
+                decrementDay.subtract(-1, 'days');
+                $('#startdate').data('DateTimePicker').maxDate(decrementDay);
+                 $(this).data("DateTimePicker").hide();
+            });
+
+        });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+  });
+
+</script>

@@ -66,6 +66,7 @@ module.exports.history1 = async function(req, res) {
 	});
 };
 
+
 var i = 0;
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max)) + 1;
@@ -195,6 +196,26 @@ module.exports.history2 = async function(req, res) {
 		}
 	// res.json(data);
   res.send(data);
+};
+
+module.exports.history3 = async function(req, res) {
+  var perPage = 10
+  var page = req.query.page || 1
+
+	let stations = await Station.find();
+	let waters = await Water.find().skip((perPage * page) - perPage).limit(perPage);
+	let recordsTotal  = await Water.countDocuments({});
+
+	let pages = Math.ceil(recordsTotal / perPage);
+
+	console.log(page, pages, recordsTotal)
+	res.render('water/history3', {
+		stations: stations,
+		waters: waters,
+		current: page,
+		pages: pages,
+		moment: moment,
+	});
 };
 
 

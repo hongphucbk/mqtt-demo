@@ -252,14 +252,15 @@ server.on('published',function getdata(packet,client) {
 		// console.log('data: ', packet.topic);
 		console.log("Data Goc: " + typeof(packet.payload))
 		var data = packet.payload.toString();
-		console.log("Data Type nhan duoc la: " + typeof(data))
+		console.log("Data Type nhan duoc la: " + (data))
 		console.log("Data nhan duoc la: " + JSON.parse(data))
 		var data_json = JSON.parse(data)
 		console.log("Data nhan duoc la: " + data_json.TEST1 )
 		io.emit('data', data_json.TEST1);
 	}
 
-	if(packet.topic =='PLC\Data') 
+	//not use
+	if(packet.topic =='PLC1/Data') 
 	{
 		// console.log('data: ', packet.topic);
 		let data = packet.payload.toString();
@@ -350,8 +351,8 @@ const { LineClient } = require('messaging-api-line');
  
 // get accessToken and channelSecret from LINE developers website
 const client = LineClient.connect({
-  accessToken: "KS76ZMVn8c/LGwp4jUMOqNp12mZw7wLLIzPztLhsjxLXhph1QbmI4VLKQSkTE6afKLOgu7pbWKpHp9sQkVgEtOUFoH4IN1YfnlEVPS4RF9SIRM9SbjKTt89XChV649boHpAu+tXEzJQ4xwolq/qh4wdB04t89/1O/w1cDnyilFU=",
-  channelSecret: "6feeb85b1ba0eb319f9164127c1a72a6", 
+  accessToken: "KS76ZMVn8c/LGwp4jUMOqNp12mZw7wLLIzPztLhsjxLXhph1  QbmI4VLKQSkTE6afKLOgu7pbWKpHp9sQkVgEtOUFoH4IN1YfnlEVPS4RF9SIRM9SbjKTt89XChV649boHpAu+tXEzJQ4xwolq/qh4wdB04t89/1O/w1cDnyilFU=",
+  channelSecret: "6feeb85b1ba0eb319f9164127c1  a72a6", 
 });
 
 // client.push('U249f46e8fbf5ab6373235660a0281a19', [

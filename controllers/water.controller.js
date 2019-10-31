@@ -199,7 +199,7 @@ module.exports.history2 = async function(req, res) {
 };
 
 module.exports.history3 = async function(req, res) {
-  var perPage = 10
+  var perPage = 20
   var page = req.query.page || 1
 
 	let stations = await Station.find();

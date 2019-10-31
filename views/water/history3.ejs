@@ -1,14 +1,37 @@
 <% layout('../layout/index') %>
 
 <style>
-    .display_value{
-      style="font-size: 24px; text-align: center;"
-    }
+  .display_value{
+    style="font-size: 24px; text-align: center;"
+  }
 
-    .cl_blue{
-      color: blue;
-    }
+  .cl_blue{
+    color: blue;
+  }
 
+  td{
+    padding: 0px 0px 0px 4px !important;
+  }
+
+  tr.tb{
+    color: white;
+    background-color: blue;
+  }
+
+  .custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+    }
+  .custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+  }
+  ul.pagination{
+    margin-top: 0px;
+  }
 </style>
 
 <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/v4.0.0/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
@@ -63,10 +86,10 @@
   <hr>
 
   <div class="row">
-    <div class="col-md-12">
-      <table id="example" class="table display" style="width:80%">
+    <div class="col-md-8">
+      <table id="example" class="table display custab" style="width:80%; margin-top: 0px;">
         <thead>
-          <tr>
+          <tr class="tb">
             <th>Time</th>
             <th>Name</th>
             <th>Value</th>

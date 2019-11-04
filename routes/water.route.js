@@ -19,6 +19,9 @@ router.get('/acknowleadge/:id', controller.acknowleadge);
 router.get('/excel', controller.listExcel);
 router.get('/chart', controller.chart);
 router.get('/chart2', controller.chart2);
+router.get('/api', controller.apiChart);
+
+
 
 // router.get('/station/:id/cabinet/:cabinet_id', controller.cabinet);
 // router.get('/station/:id/cabinet/:cabinet_id/chart', controller.chart);

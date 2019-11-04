@@ -449,13 +449,59 @@ module.exports.chart = async function(req, res) {
 module.exports.chart2 = async function(req, res) {
 	let stations = await Station.find();
 	let waters = await Water.find({ $or: [ {data: { $gte: 80 }}, {data: { $lte: 20}} ] } ).sort('-timestamp').limit(30);
-	let oldWaters1 = await Water.find({name: "1"}).sort('-timestamp').limit(30);
-	let oldWaters2 = await Water.find({name: "2"}).sort('-timestamp').limit(30);
+	// let oldWaters1 = await Water.find({name: "1"}).sort('-timestamp').limit(30);
+	// let oldWaters2 = await Water.find({name: "2"}).sort('-timestamp').limit(30);
+
+	let oldWaters1 = await Water.find({name: "1"}).sort('-timestamp').limit(20);
+	let oldWaters2 = await Water.find({name: "2"}).sort('-timestamp').limit(20);
+
+	let dt1 = [];
+	let time1 = [];
+	oldWaters1.forEach(function(water1){
+		let temp1 = water1.data ;
+		dt1.push(water1.data);
+		time1.push(water1.timestamp)
+	});
+
+	var series = 
+	{
+	  "monthDataSeries1": {
+	    "prices": dt1,
+	    "dates": time1
+	  }
+	}
+
 	res.render('water/chart2', {
 		stations: stations,
 		waters: waters,
 		oldWaters1: oldWaters1,
 		oldWaters2: oldWaters2,
 		moment: moment,
+		series: series,
 	});
+};
+
+
+module.exports.apiChart = async function(req, res) {
+	//let waters = await Water.find({ $or: [ {data: { $gte: 80 }}, {data: { $lte: 20}} ] } ).sort('-timestamp').limit(30);
+	let oldWaters1 = await Water.find({name: "1"}).sort('-timestamp').limit(1500);
+	let oldWaters2 = await Water.find({name: "2"}).sort('-timestamp').limit(1500);
+
+	let dt1 = [];
+	let time1 = [];
+	oldWaters1.forEach(function(water1){
+		let temp1 = water1.data ;
+		dt1.push(water1.data);
+		time1.push(water1.timestamp)
+	});
+
+	var series = 
+	{
+	  "monthDataSeries1": {
+	    "prices": dt1,
+	    "dates": time1
+	  }
+	}
+
+	res.send(series);
 };

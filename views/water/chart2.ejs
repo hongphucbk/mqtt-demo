@@ -8,10 +8,7 @@
   .cl_blue{
     color: blue;
   }
-
   body {}
-
-  
 </style>
 
 <div class="panel-heading">
@@ -145,109 +142,156 @@
 <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
+<!-- <script src="https://apexcharts.com/samples/assets/stock-prices.js"></script> -->
+
+<!-- <script src="/data/data.js"></script> -->
+
+<script type="text/javascript">
+  var series;
+//  console.log(series)
+// var series = 
+// {
+//   "monthDataSeries1": {
+//     "prices": [
+//       24,
+//       85.29,
+//       46.25,
+//       86.00
+//     ],
+//     "dates": [
+//       "13 Nov 2019 14:00:12",
+//       "14 Nov 2019 14:01:14",
+//       "14 Nov 2019 14:03:16",
+//       "08 Dec 2019"
+//     ]
+//   }
+// }
+  $.ajax({
+    type: "GET",
+    url: "/water/api",
+    //data: myusername,
+    cache: false,
+    success: function(data){
+      series = data;
+      console.log(series);
+
+      var options = {
+        annotations: {
+          yaxis: [
+            {
+              y: 1000,
+              borderColor: "#00E396",
+              label: {
+                borderColor: "#00E396",
+                style: {
+                  color: "#fff",
+                  background: "#00E396"
+                },
+                text: "Y Axis Annotation"
+              }
+            }
+          ],
+          xaxis: [
+            {
+              // in a datetime series, the x value should be a timestamp, just like it is generated below
+              x: new Date("11/03/2019").getTime(),
+              strokeDashArray: 0,
+              borderColor: "#775DD0",
+              label: {
+                borderColor: "#775DD0",
+                style: {
+                  color: "#fff",
+                  background: "#775DD0"
+                },
+                text: "X Axis Anno Vertical"
+              }
+            },
+            {
+              x: new Date("03 Dec 2019").getTime(),
+              borderColor: "#FEB019",
+              label: {
+                borderColor: "#FEB019",
+                style: {
+                  color: "#fff",
+                  background: "#FEB019"
+                },
+                orientation: "horizontal",
+                text: "X Axis Anno Horizonal"
+              }
+            }
+          ],
+          points: [
+            {
+              x: new Date("27 Nov 2019").getTime(),
+              y: 8500.9,
+              marker: {
+                size: 6,
+                fillColor: "#fff",
+                strokeColor: "#2698FF",
+                radius: 2
+              },
+              label: {
+                borderColor: "#FF4560",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#FF4560"
+                },
+
+                text: "Point Annotation (XY)"
+              }
+            }
+          ]
+        },
+        chart: {
+          height: 450,
+          type: "line",
+          id: "areachart-2"
+        },
+        dataLabels: {
+          enabled: true
+        },
+        stroke: {
+          curve: "straight"
+        },
+        series: [
+          {
+            data: series.monthDataSeries1.prices
+          }
+        ],
+        title: {
+          text: "Historical Data",
+          align: "left"
+        },
+        labels: series.monthDataSeries1.dates,
+        xaxis: {
+          type: "datetime",   //datetime or text
+          labels: {
+            show: true,
+            datetimeFormatter: {
+                year: 'yyyy',
+                month: "MMM 'yy",
+                day: 'dd MMM',
+                hour: 'HH:mm',
+            },
+          },
+        }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render();
+      // https://apexcharts.com/docs/options/xaxis/
+      // https://apexcharts.com/docs/datetime/
+    }
+  });
 
 
+</script>
 
 
 <!-- Chart -->
 <script type="text/javascript">
-  var options = {
-  annotations: {
-    yaxis: [
-      {
-        y: 8200,
-        borderColor: "#00E396",
-        label: {
-          borderColor: "#00E396",
-          style: {
-            color: "#fff",
-            background: "#00E396"
-          },
-          text: "Y Axis Annotation"
-        }
-      }
-    ],
-    xaxis: [
-      {
-        // in a datetime series, the x value should be a timestamp, just like it is generated below
-        x: new Date("11/17/2017").getTime(),
-        strokeDashArray: 0,
-        borderColor: "#775DD0",
-        label: {
-          borderColor: "#775DD0",
-          style: {
-            color: "#fff",
-            background: "#775DD0"
-          },
-          text: "X Axis Anno Vertical"
-        }
-      },
-      {
-        x: new Date("03 Dec 2017").getTime(),
-        borderColor: "#FEB019",
-        label: {
-          borderColor: "#FEB019",
-          style: {
-            color: "#fff",
-            background: "#FEB019"
-          },
-          orientation: "horizontal",
-          text: "X Axis Anno Horizonal"
-        }
-      }
-    ],
-    points: [
-      {
-        x: new Date("27 Nov 2017").getTime(),
-        y: 8500.9,
-        marker: {
-          size: 6,
-          fillColor: "#fff",
-          strokeColor: "#2698FF",
-          radius: 2
-        },
-        label: {
-          borderColor: "#FF4560",
-          offsetY: 0,
-          style: {
-            color: "#fff",
-            background: "#FF4560"
-          },
-
-          text: "Point Annotation (XY)"
-        }
-      }
-    ]
-  },
-  chart: {
-    height: 380,
-    type: "line",
-    id: "areachart-2"
-  },
-  dataLabels: {
-    enabled: false
-  },
-  stroke: {
-    curve: "straight"
-  },
-  series: [
-    {
-      data: series.monthDataSeries1.prices
-    }
-  ],
-  title: {
-    text: "Line with Annotations",
-    align: "left"
-  },
-  labels: series.monthDataSeries1.dates,
-  xaxis: {
-    type: "datetime"
-  }
-};
-
-var chart = new ApexCharts(document.querySelector("#chart"), options);
-chart.render();
+  
 
 // example of series in another format
 // chart.updateSeries([{
@@ -259,7 +303,5 @@ chart.render();
 //     y: 51
 //   }]
 // }])
-
-
 
 </script>
